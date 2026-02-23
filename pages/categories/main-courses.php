@@ -7,14 +7,14 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$pageTitle = "Appetizers - Smart Dine";
-$headerTitle = "🥗 Appetizers";
+$pageTitle = "Main Courses - Smart Dine";
+$headerTitle = "🍽️ Main Courses";
 
 $products = json_decode(file_get_contents('data/products.json'), true);
 $restaurant = isset($_GET['restaurant']) ? $_GET['restaurant'] : null;
 
 $results = array_filter($products, function ($product) use ($restaurant) {
-    return $product['category'] === 'appetizer' && (!$restaurant || $product['restaurant'] === $restaurant);
+    return $product['category'] === 'main-course' && (!$restaurant || $product['restaurant'] === $restaurant);
 });
 
 foreach ($results as $index => $product) {
@@ -24,7 +24,7 @@ foreach ($results as $index => $product) {
 }
 
 if ($restaurant) {
-    $headerTitle = "🥗 Appetizers - " . htmlspecialchars($restaurant);
+    $headerTitle = "🍽️ Main Courses - " . htmlspecialchars($restaurant);
 }
 
 include 'includes/header.php';
@@ -129,21 +129,21 @@ include 'includes/header.php';
 
 <div class="hero-section">
     <h2><?php echo $headerTitle; ?></h2>
-    <p>Start your meal with our delicious appetizers</p>
+    <p>Satisfy your hunger with our hearty main courses</p>
     <?php if ($restaurant): ?>
-        <p style="margin-top: 15px;"><a href="appetizers.php" style="color: #667eea; font-weight: 600;">View all restaurants</a></p>
+        <p style="margin-top: 15px;"><a href="main-courses.php" style="color: #667eea; font-weight: 600;">View all restaurants</a></p>
     <?php endif; ?>
 </div>
 
 <div class="product-grid">
     <?php if (empty($results)): ?>
         <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: rgba(255,255,255,0.95); border-radius: 20px;">
-            <h3 style="color: #667eea;">No appetizers found</h3>
+            <h3 style="color: #667eea;">No main courses found</h3>
         </div>
     <?php else: ?>
         <?php foreach ($results as $product): ?>
             <div class="product">
-                <img src="assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
+                <img src="../../assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
                      alt="<?php echo htmlspecialchars($product['name']); ?>">
                 <div class="product-info">
                     <h3><?php echo htmlspecialchars($product['name']); ?></h3>

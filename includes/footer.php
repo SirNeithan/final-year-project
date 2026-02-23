@@ -4,7 +4,7 @@
         <p>📞 Contact us: +123-456-7890 | Smart Dine - Taste the Difference 🍽️</p>
     </footer>
     
-    <script src="assets/js/script.js"></script>
+    <script src="<?php echo $basePath; ?>assets/js/script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             updateCartCount();

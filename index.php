@@ -175,7 +175,7 @@
       Order smarter. Dine better. Live tastier.
     </p>
 
-    <a href="login.php" class="cta-btn">
+    <a href="pages/auth/login.php" class="cta-btn">
       Get Started 🚀
     </a>
 

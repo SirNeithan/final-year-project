@@ -1,33 +1,37 @@
 <?php
 session_start();
-require 'includes/connect.php';
+require '../../includes/connect.php';
 
-// Handle login submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
-  $username = $_POST['username'] ?? '';
-  $password = $_POST['password'] ?? '';
-  $error = '';
-  
-  if (!empty($username) && !empty($password)) {
+$regError = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $regUsername = trim($_POST['reg_username'] ?? '');
+  $regEmail = trim($_POST['reg_email'] ?? '');
+  $regPassword = $_POST['reg_password'] ?? '';
+
+  if ($regUsername && $regEmail && $regPassword) {
     try {
-      $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-      $stmt->execute([$username]);
-      $user = $stmt->fetch(PDO::FETCH_ASSOC);
-      
-      if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+      $check = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
+      $check->execute([$regUsername, $regEmail]);
+
+      if ($check->fetch()) {
+        $regError = 'Username or email already exists';
+      } else {
+        $hashed = password_hash($regPassword, PASSWORD_BCRYPT);
+        $insert = $conn->prepare("INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, 'user')");
+        $insert->execute([$regUsername, $hashed, $regEmail]);
+
+        $_SESSION['user_id'] = $conn->lastInsertId();
+        $_SESSION['username'] = $regUsername;
+        $_SESSION['role'] = 'user';
         header('Location: home.php', true, 302);
         exit();
-      } else {
-        $error = $user ? 'Invalid password' : 'User not found';
       }
     } catch (Exception $e) {
-      $error = 'Login error: ' . $e->getMessage();
+      $regError = 'Registration error: ' . $e->getMessage();
     }
   } else {
-    $error = 'Please enter both username and password';
+    $regError = 'Please fill in all fields';
   }
 }
 ?>
@@ -35,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - Smart Dine</title>
+  <title>Create Account - Smart Dine</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -54,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
       padding: 20px;
     }
 
-    .login-card {
+    .register-card {
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
       width: 100%;
@@ -65,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
       text-align: center;
     }
 
-    .login-card h1 {
+    .register-card h1 {
       font-size: 2.5rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
@@ -75,9 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
       font-weight: 700;
     }
 
-    .emoji-row {
-      font-size: 2rem;
+    .register-card p {
+      color: #666;
       margin-bottom: 30px;
+      font-size: 1.1rem;
     }
 
     .input-group {
@@ -117,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
       border-radius: 10px;
     }
 
-    .login-btn {
+    .register-btn {
       width: 100%;
       padding: 15px;
       margin-top: 10px;
@@ -132,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
       box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
 
-    .login-btn:hover {
+    .register-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
     }
@@ -142,101 +147,61 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
       border-top: 2px solid rgba(102, 126, 234, 0.1);
     }
 
-    .register-link {
+    .login-link {
       color: #667eea;
       font-weight: 600;
       text-decoration: none;
       font-size: 1.05rem;
     }
 
-    .register-link:hover {
-      text-decoration: underline;
-    }
-
-    .demo-credentials {
-      margin-top: 30px;
-      padding-top: 30px;
-      border-top: 2px solid rgba(102, 126, 234, 0.1);
-    }
-
-    .demo-credentials p {
-      color: #666;
-      font-size: 0.9rem;
-      line-height: 1.8;
-    }
-
-    .demo-credentials strong {
-      color: #667eea;
-    }
-
-    .back-home {
-      margin-top: 20px;
-    }
-
-    .back-home a {
-      color: #667eea;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .back-home a:hover {
+    .login-link:hover {
       text-decoration: underline;
     }
 
     @media (max-width: 480px) {
-      .login-card {
+      .register-card {
         padding: 40px 30px;
       }
 
-      .login-card h1 {
+      .register-card h1 {
         font-size: 2rem;
       }
     }
   </style>
 </head>
 <body>
+  <div class="register-card">
+    <h1>Create Account</h1>
+    <p>Join Smart Dine today! 🎉</p>
 
-  <div class="login-card">
-    <h1>Smart Dine</h1>
-    <div class="emoji-row">🍔 🍕 🍜 🥗 🍰</div>
-
-    <form method="POST" action="login.php">
-      <input type="hidden" name="login" value="1">
-      
+    <form method="POST" action="register.php">
       <div class="input-group">
         <label>Username</label>
-        <input type="text" name="username" placeholder="Enter your username" required>
+        <input type="text" name="reg_username" placeholder="Choose a username" required>
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" name="reg_email" placeholder="Enter your email" required>
       </div>
 
       <div class="input-group">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Enter your password" required>
+        <input type="password" name="reg_password" placeholder="Create a password" required>
       </div>
 
-      <?php if (isset($error) && !empty($error)): ?>
-        <div class="error-message">⚠️ <?php echo htmlspecialchars($error); ?></div>
+      <?php if (!empty($regError)): ?>
+        <div class="error-message">⚠️ <?php echo htmlspecialchars($regError); ?></div>
       <?php endif; ?>
 
-      <button class="login-btn" type="submit">Login 🚀</button>
+      <button class="register-btn" type="submit">Create Account ✨</button>
     </form>
 
     <div class="divider"></div>
 
-    <p style="color: #666; margin-bottom: 15px;">Don't have an account?</p>
-    <a class="register-link" href="register.php">Create Account ✨</a>
-
-    <div class="demo-credentials">
-      <p><strong>Demo Credentials:</strong></p>
-      <p>
-        <strong>Users:</strong> demo1-demo4 / password<br>
-        <strong>Admin:</strong> admin / admin123
-      </p>
-    </div>
-
-    <div class="back-home">
-      <a href="index.php">← Back to Home</a>
-    </div>
+    <p style="color: #666; margin-bottom: 15px;">Already have an account?</p>
+    <a class="login-link" href="login.php">Login here 🚀</a>
   </div>
-
 </body>
 </html>
+

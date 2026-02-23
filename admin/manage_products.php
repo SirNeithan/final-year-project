@@ -3,7 +3,7 @@ session_start();
 require '../includes/connect.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../login.php');
+    header('Location: ../pages/auth/login.php');
     exit();
 }
 

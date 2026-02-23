@@ -143,7 +143,7 @@ include 'includes/header.php';
     <?php else: ?>
         <?php foreach ($results as $product): ?>
             <div class="product">
-                <img src="assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
+                <img src="../../assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
                      alt="<?php echo htmlspecialchars($product['name']); ?>">
                 <div class="product-info">
                     <h3><?php echo htmlspecialchars($product['name']); ?></h3>

@@ -1,13 +1,13 @@
 <?php
 session_start();
-include 'includes/connect.php'; // Using the fixed config file
+include '../../includes/connect.php'; // Using the fixed config file
 
 // Initialize cart items array
 $cartItems = [];
 
 // Check if we have products in the cart
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-    $allProducts = json_decode(file_get_contents('data/products.json'), true);
+    $allProducts = json_decode(file_get_contents('../../data/products.json'), true);
     
     // Add IDs to products if they don't have them
     foreach ($allProducts as $index => $product) {
@@ -36,7 +36,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart - Smart Dine</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -251,7 +251,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include '../../includes/header.php'; ?>
     <div id="notification"></div>
     
     <main>
@@ -274,7 +274,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
                         $total += $price;
                     ?>
                         <div class="cart-item">
-                            <img src="assets/images/food pics/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17e19a89e35%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3A-apple-system%2CBlinkMacSystemFont%2C%26quot%3BSegoe%20UI%26quot%3B%2CRoboto%2C%26quot%3BHelvetica%20Neue%26quot%3B%2CArial%2C%26quot%3BNoto%20Sans%26quot%3B%2Csans-serif%2C%26quot%3BApple%20Color%20Emoji%26quot%3B%2C%26quot%3BSegoe%20UI%20Emoji%26quot%3B%2C%26quot%3BSegoe%20UI%20Symbol%26quot%3B%2C%26quot%3BNoto%20Color%20Emoji%26quot%3B%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17e19a89e35%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23373940%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22108.5390625%22%20y%3D%2297.5%22%3E<?php echo $item['name']; ?>%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'">
+                            <img src="../../assets/images/food pics/<?php echo $item['image']; ?>" alt="<?php echo $item['name']; ?>" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17e19a89e35%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3A-apple-system%2CBlinkMacSystemFont%2C%26quot%3BSegoe%20UI%26quot%3B%2CRoboto%2C%26quot%3BHelvetica%20Neue%26quot%3B%2CArial%2C%26quot%3BNoto%20Sans%26quot%3B%2Csans-serif%2C%26quot%3BApple%20Color%20Emoji%26quot%3B%2C%26quot%3BSegoe%20UI%20Emoji%26quot%3B%2C%26quot%3BSegoe%20UI%20Symbol%26quot%3B%2C%26quot%3BNoto%20Color%20Emoji%26quot%3B%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17e19a89e35%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23373940%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22108.5390625%22%20y%3D%2297.5%22%3E<?php echo $item['name']; ?>%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'">
                             <div class="cart-item-info">
                                 <h3><?php echo $item['name']; ?></h3>
                                 <p><?php echo $item['price']; ?></p>
@@ -299,7 +299,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         </div>
     </main>
 
-    <?php include 'includes/footer.php'; ?>
+    <?php include '../../includes/footer.php'; ?>
 
     <script>
     // Function to show notification
@@ -319,7 +319,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         showNotification('Removing from cart...');
         
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "api/remove_from_cart.php", true);
+        xhr.open("POST", "../../api/remove_from_cart.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         xhr.onreadystatechange = function () {
@@ -351,7 +351,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     // Function to update the cart count displayed on the page
     function updateCartCount() {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "api/get_cart_count.php", true);
+        xhr.open("GET", "../../api/get_cart_count.php", true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'includes/connect.php';
+include '../../includes/connect.php';
 
 // Initialize cart items array
 $cartItems = [];
@@ -18,7 +18,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
             $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             // Fallback to JSON file
-            $allProducts = json_decode(file_get_contents('data/products.json'), true);
+            $allProducts = json_decode(file_get_contents('../../data/products.json'), true);
             foreach ($allProducts as $index => $product) {
                 if (!isset($product['id'])) {
                     $allProducts[$index]['id'] = $index + 1;
@@ -30,7 +30,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         }
     } else {
         // Fallback to JSON file
-        $allProducts = json_decode(file_get_contents('data/products.json'), true);
+        $allProducts = json_decode(file_get_contents('../../data/products.json'), true);
         foreach ($allProducts as $index => $product) {
             if (!isset($product['id'])) {
                 $allProducts[$index]['id'] = $index + 1;
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout - Smart Dine</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -310,7 +310,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include '../../includes/header.php'; ?>
     <div id="notification"></div>
     
     <main>
@@ -322,7 +322,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
                     <h2>Order Placed Successfully!</h2>
                     <p>Thank you for your purchase. Your order #<?php echo $orderId; ?> has been placed and will be processed shortly.</p>
                     <p>A confirmation email has been sent to your email address.</p>
-                    <p><a href="orders.php">View My Orders</a> | <a href="home.php">Continue Shopping</a></p>
+                    <p><a href="../orders/orders.php">View My Orders</a> | <a href="../../home.php">Continue Shopping</a></p>
                 </div>
             <?php elseif (empty($cartItems)): ?>
                 <div class="empty-cart-message">
@@ -388,7 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
         </div>
     </main>
 
-    <?php include 'includes/footer.php'; ?>
+    <?php include '../../includes/footer.php'; ?>
 
     <script>
     // Function to show notification
@@ -405,7 +405,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
     // Function to update the cart count displayed on the page
     function updateCartCount() {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "api/get_cart_count.php", true);
+        xhr.open("GET", "../../api/get_cart_count.php", true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {

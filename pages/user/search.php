@@ -1,7 +1,7 @@
 <?php
 session_start();
 // Use the products.json file for products data
-$products = json_decode(file_get_contents('data/products.json'), true);
+$products = json_decode(file_get_contents('../../data/products.json'), true);
 
 // Get search parameters
 $query = isset($_GET['query']) ? strtolower($_GET['query']) : '';
@@ -397,15 +397,15 @@ foreach ($results as $index => $product) {
                 <span class="user-badge">
                     👤 <?php echo htmlspecialchars($_SESSION['username']); ?>
                 </span>
-                <a href="logout.php" class="logout-btn">🚪 Logout</a>
+                <a href="../auth/logout.php" class="logout-btn">🚪 Logout</a>
             </div>
         </div>
         <nav>
             <ul>
-                <li><a href="home.php">🏠 Home</a></li>
+                <li><a href="../../home.php">🏠 Home</a></li>
                 <li><a href="search.php">🔍 Search</a></li>
                 <li><a href="profile.php">👤 Profile</a></li>
-                <li><a href="orders.php">📦 Orders</a></li>
+                <li><a href="../orders/orders.php">📦 Orders</a></li>
                 <li><a href="cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                     <li><a href="admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">⚙️ Admin</a></li>
@@ -448,7 +448,7 @@ foreach ($results as $index => $product) {
             <?php else: ?>
                 <?php foreach ($results as $product): ?>
                     <div class="product">
-                        <img src="assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
+                        <img src="../../assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
                              alt="<?php echo htmlspecialchars($product['name']); ?>">
                         <div class="product-info">
                             <h3><?php echo htmlspecialchars($product['name']); ?></h3>
@@ -487,7 +487,7 @@ foreach ($results as $index => $product) {
         showNotification('Adding to cart...');
         
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "api/add_to_cart.php", true);
+        xhr.open("POST", "../../api/add_to_cart.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
         xhr.onreadystatechange = function () {
@@ -517,7 +517,7 @@ foreach ($results as $index => $product) {
     // Function to update the cart count displayed on the page
     function updateCartCount() {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "api/get_cart_count.php", true);
+        xhr.open("GET", "../../api/get_cart_count.php", true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {

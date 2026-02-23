@@ -3,7 +3,7 @@ session_start();
 require 'includes/connect.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: pages/auth/login.php');
     exit();
 }
 
@@ -400,7 +400,7 @@ if ($restaurant) {
                         <span class="admin-badge">ADMIN</span>
                     <?php endif; ?>
                 </span>
-                <a href="logout.php" class="logout-btn">🚪 Logout</a>
+                <a href="pages/auth/logout.php" class="logout-btn">🚪 Logout</a>
             </div>
         </div>
         <nav>
@@ -412,10 +412,10 @@ if ($restaurant) {
                     <li><a href="desserts.php?restaurant=<?php echo urlencode($restaurant); ?>">🍰 Desserts</a></li>
                     <li><a href="beverages.php?restaurant=<?php echo urlencode($restaurant); ?>">🥤 Beverages</a></li>
                 <?php endif; ?>
-                <li><a href="search.php">🔍 Search</a></li>
-                <li><a href="profile.php">👤 Profile</a></li>
-                <li><a href="orders.php">📦 Orders</a></li>
-                <li><a href="cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="pages/user/search.php">🔍 Search</a></li>
+                <li><a href="pages/user/profile.php">👤 Profile</a></li>
+                <li><a href="pages/orders/orders.php">📦 Orders</a></li>
+                <li><a href="pages/user/cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                     <li><a href="admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">⚙️ Admin</a></li>
                 <?php endif; ?>

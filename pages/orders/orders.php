@@ -1,9 +1,9 @@
 <?php
 session_start();
-require 'includes/connect.php';
+require '../../includes/connect.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit();
 }
 
@@ -33,7 +33,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders - Smart Dine</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
         * {
             margin: 0;
@@ -222,7 +222,7 @@ try {
     </style>
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
+    <?php include '../../includes/header.php'; ?>
 
     <main>
         <div class="orders-container">
@@ -232,7 +232,7 @@ try {
                 <div class="no-orders">
                     <h2>No Orders Yet</h2>
                     <p>You haven't placed any orders yet.</p>
-                    <a href="home.php" class="back-btn">Start Shopping</a>
+                    <a href="../../home.php" class="back-btn">Start Shopping</a>
                 </div>
             <?php else: ?>
                 <?php foreach ($orders as $order): ?>
@@ -270,7 +270,7 @@ try {
         </div>
     </main>
 
-    <?php include 'includes/footer.php'; ?>
-    <script src="assets/js/script.js"></script>
+    <?php include '../../includes/footer.php'; ?>
+    <script src="../../assets/js/script.js"></script>
 </body>
 </html>

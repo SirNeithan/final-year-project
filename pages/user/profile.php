@@ -1,9 +1,9 @@
 <?php
 session_start();
-require 'includes/connect.php';
+require '../../includes/connect.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit();
 }
 
@@ -70,7 +70,7 @@ try {
     die('Error fetching user data: ' . $e->getMessage());
 }
 
-include 'includes/header.php';
+include '../../includes/header.php';
 ?>
 
 <style>
@@ -253,4 +253,4 @@ include 'includes/header.php';
     </div>
 </div>
 
-<?php include 'includes/footer.php'; ?>
+<?php include '../../includes/footer.php'; ?>

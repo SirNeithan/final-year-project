@@ -1,3 +1,11 @@
+<?php
+// Determine the base path for navigation
+if (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) {
+    $basePath = '../../';
+} else {
+    $basePath = '';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -187,25 +195,25 @@
                         <span class="admin-badge">ADMIN</span>
                     <?php endif; ?>
                 </span>
-                <a href="logout.php" class="logout-btn">🚪 Logout</a>
+                <a href="<?php echo $basePath; ?>pages/auth/logout.php" class="logout-btn">🚪 Logout</a>
             </div>
             <?php endif; ?>
         </div>
         <nav>
             <ul>
-                <li><a href="home.php">🏠 Home</a></li>
+                <li><a href="<?php echo $basePath; ?>home.php">🏠 Home</a></li>
                 <?php if (isset($restaurant) && $restaurant): ?>
-                    <li><a href="appetizers.php?restaurant=<?php echo urlencode($restaurant); ?>">🥗 Appetizers</a></li>
-                    <li><a href="main-courses.php?restaurant=<?php echo urlencode($restaurant); ?>">🍽️ Main Courses</a></li>
-                    <li><a href="desserts.php?restaurant=<?php echo urlencode($restaurant); ?>">🍰 Desserts</a></li>
-                    <li><a href="beverages.php?restaurant=<?php echo urlencode($restaurant); ?>">🥤 Beverages</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/appetizers.php?restaurant=<?php echo urlencode($restaurant); ?>">🥗 Appetizers</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/main-courses.php?restaurant=<?php echo urlencode($restaurant); ?>">🍽️ Main Courses</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/desserts.php?restaurant=<?php echo urlencode($restaurant); ?>">🍰 Desserts</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/beverages.php?restaurant=<?php echo urlencode($restaurant); ?>">🥤 Beverages</a></li>
                 <?php endif; ?>
-                <li><a href="search.php">🔍 Search</a></li>
-                <li><a href="profile.php">👤 Profile</a></li>
-                <li><a href="orders.php">📦 Orders</a></li>
-                <li><a href="cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/user/search.php">🔍 Search</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/user/profile.php">👤 Profile</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/orders/orders.php">📦 Orders</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/user/cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <li><a href="admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">⚙️ Admin</a></li>
+                    <li><a href="<?php echo $basePath; ?>admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">⚙️ Admin</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
