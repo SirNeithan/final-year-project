@@ -24,9 +24,36 @@ CREATE TABLE cart (
     user_id INT,
     product_id INT NOT NULL,
     quantity INT DEFAULT 1,
+    restaurant VARCHAR(100) NOT NULL,
     added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
+
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
+    status VARCHAR(50) DEFAULT 'pending',
+    delivery_address TEXT NOT NULL,
+    delivery_city VARCHAR(100) NOT NULL,
+    delivery_zip VARCHAR(20) NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
+    customer_email VARCHAR(255) NOT NULL,
+    payment_method VARCHAR(50) DEFAULT 'credit_card',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
+    product_price VARCHAR(50) NOT NULL,
+    quantity INT DEFAULT 1,
+    restaurant VARCHAR(100) NOT NU
 
 -- Demo Users (passwords are hashed using password_hash)
 -- User credentials: username/password

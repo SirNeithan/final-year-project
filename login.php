@@ -2,41 +2,6 @@
 session_start();
 require 'includes/connect.php';
 
-// Handle registration submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-  $regUsername = trim($_POST['reg_username'] ?? '');
-  $regEmail = trim($_POST['reg_email'] ?? '');
-  $regPassword = $_POST['reg_password'] ?? '';
-  $regError = '';
-
-  if ($regUsername && $regEmail && $regPassword) {
-    try {
-      // Check if username/email already exists
-      $check = $conn->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-      $check->execute([$regUsername, $regEmail]);
-
-      if ($check->fetch()) {
-        $regError = 'Username or email already exists';
-      } else {
-        $hashed = password_hash($regPassword, PASSWORD_BCRYPT);
-        $insert = $conn->prepare("INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, 'user')");
-        $insert->execute([$regUsername, $hashed, $regEmail]);
-
-        // Auto-login after registration
-        $_SESSION['user_id'] = $conn->lastInsertId();
-        $_SESSION['username'] = $regUsername;
-        $_SESSION['role'] = 'user';
-        header('Location: home.php', true, 302);
-        exit();
-      }
-    } catch (Exception $e) {
-      $regError = 'Registration error: ' . $e->getMessage();
-    }
-  } else {
-    $regError = 'Please fill in all registration fields';
-  }
-}
-
 // Handle login submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
   $username = $_POST['username'] ?? '';
@@ -45,17 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
   
   if (!empty($username) && !empty($password)) {
     try {
-      // Query the database for the user
       $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
       $stmt->execute([$username]);
       $user = $stmt->fetch(PDO::FETCH_ASSOC);
       
-      // Verify password
       if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
-        // Make sure no output before redirect
         header('Location: home.php', true, 302);
         exit();
       } else {
@@ -73,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Smart Dine Place 🍔🍕</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <title>Login - Smart Dine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -85,112 +47,174 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
 
     .login-card {
-      background: white;
-      width: 350px;
-      padding: 2.5rem;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 420px;
+      padding: 50px 40px;
+      border-radius: 25px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
       text-align: center;
     }
 
     .login-card h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
 
     .emoji-row {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .login-card p {
-      color: #666;
-      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      margin-bottom: 30px;
     }
 
     .input-group {
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
       text-align: left;
     }
 
     .input-group label {
-      font-size: 0.9rem;
-      color: #444;
+      font-size: 0.95rem;
+      color: #333;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 8px;
     }
 
     .input-group input {
       width: 100%;
-      padding: 0.7rem;
-      margin-top: 0.3rem;
-      border-radius: 10px;
-      border: 1px solid #ddd;
+      padding: 15px 20px;
+      border-radius: 15px;
+      border: 2px solid rgba(102, 126, 234, 0.2);
       outline: none;
-      transition: 0.3s;
+      transition: all 0.3s;
+      font-size: 1rem;
     }
 
     .input-group input:focus {
-      border-color: #ff6f61;
-      box-shadow: 0 0 5px #ff6f61;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .error-message {
+      color: #f5576c;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: rgba(245, 87, 108, 0.1);
+      border-radius: 10px;
     }
 
     .login-btn {
       width: 100%;
-      padding: 0.8rem;
-      margin-top: 1rem;
+      padding: 15px;
+      margin-top: 10px;
       border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #ff6f61, #ff9472);
+      border-radius: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      font-size: 1rem;
+      font-size: 1.1rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
 
     .login-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-
-    .footer-text {
-      margin-top: 1.5rem;
-      font-size: 0.8rem;
-      color: #999;
+      box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
     }
 
     .divider {
-      margin: 1.5rem 0;
-      border-top: 1px solid #ddd;
+      margin: 30px 0;
+      border-top: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .register-link {
+      color: #667eea;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1.05rem;
+    }
+
+    .register-link:hover {
+      text-decoration: underline;
+    }
+
+    .demo-credentials {
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 2px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .demo-credentials p {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .demo-credentials strong {
+      color: #667eea;
+    }
+
+    .back-home {
+      margin-top: 20px;
+    }
+
+    .back-home a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .back-home a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 40px 30px;
+      }
+
+      .login-card h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="login-card">
-    <h1>Smart Dine Place</h1>
-    <div class="emoji-row">🍔 🍕 🍟 🌮 🍩</div>
-    <p>Welcome back, foodie!</p>
+    <h1>Smart Dine</h1>
+    <div class="emoji-row">🍔 🍕 🍜 🥗 🍰</div>
 
     <form method="POST" action="login.php">
       <input type="hidden" name="login" value="1">
+      
       <div class="input-group">
         <label>Username</label>
-        <input type="text" name="username" placeholder="Enter username" required>
+        <input type="text" name="username" placeholder="Enter your username" required>
       </div>
 
       <div class="input-group">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Enter password" required>
+        <input type="password" name="password" placeholder="Enter your password" required>
       </div>
 
       <?php if (isset($error) && !empty($error)): ?>
-        <div style="color: #ff6f61; font-size: 0.9rem; margin-bottom: 1rem;"><?php echo $error; ?></div>
+        <div class="error-message">⚠️ <?php echo htmlspecialchars($error); ?></div>
       <?php endif; ?>
 
       <button class="login-btn" type="submit">Login 🚀</button>
@@ -198,24 +222,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
     <div class="divider"></div>
 
-    <p style="color: #666; margin-bottom: 1rem;">New here?</p>
-    <a class="login-btn" href="register.php" style="text-decoration: none; display: inline-block; text-align: center;">
-      Create Account ✨
-    </a>
+    <p style="color: #666; margin-bottom: 15px;">Don't have an account?</p>
+    <a class="register-link" href="register.php">Create Account ✨</a>
 
-    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #ddd;">
-      <p style="color: #666; font-size: 0.85rem; margin-bottom: 0.8rem;"><strong>Demo Credentials:</strong></p>
-      <p style="color: #999; font-size: 0.8rem; line-height: 1.6;">
+    <div class="demo-credentials">
+      <p><strong>Demo Credentials:</strong></p>
+      <p>
         <strong>Users:</strong> demo1-demo4 / password<br>
         <strong>Admin:</strong> admin / admin123
       </p>
     </div>
 
-    <div class="footer-text">
-      © 2026 Smart Dine Place 🥗
+    <div class="back-home">
+      <a href="index.php">← Back to Home</a>
     </div>
   </div>
 
 </body>
 </html>
-

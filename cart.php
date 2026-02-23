@@ -34,122 +34,230 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart - Nate Liquor Stores</title>
+    <title>Cart - Smart Dine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        /* Cart specific styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
         .cart-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
+        
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
         .cart-item {
             display: flex;
             align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
         }
+        
+        .cart-item:hover {
+            transform: translateY(-3px);
+        }
+        
         .cart-item img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
-            margin-right: 15px;
+            border-radius: 15px;
+            margin-right: 20px;
         }
+        
         .cart-item-info {
             flex-grow: 1;
         }
+        
+        .cart-item-info h3 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-info p {
+            color: #333;
+            margin: 5px 0;
+        }
+        
         .cart-item button {
-            background-color: #f44336;
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 15px;
             cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
+        
+        .cart-item button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(235, 51, 73, 0.4);
+        }
+        
         .checkout-btn {
             display: inline-block;
-            background-color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            margin-top: 20px;
+            padding: 15px 40px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
         }
+        
+        .checkout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
         .empty-cart {
             text-align: center;
-            padding: 30px;
-            color: #777;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
+        
+        .empty-cart h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .empty-cart p {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        
+        .empty-cart a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
         .cart-summary {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f5f5f5;
-            border-radius: 4px;
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
+        
+        .cart-summary h3 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        
         .cart-summary p {
             display: flex;
             justify-content: space-between;
-            margin: 5px 0;
+            margin: 12px 0;
+            color: #333;
+            font-size: 1.05em;
         }
+        
         .cart-summary .total {
-            font-weight: bold;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-            margin-top: 10px;
+            font-weight: 600;
+            font-size: 1.3em;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 15px;
+            margin-top: 15px;
+            color: #333;
         }
+        
         #notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 15px 25px;
-            border-radius: 4px;
+            border-radius: 15px;
             display: none;
             z-index: 1000;
             animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-weight: 500;
         }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         @keyframes fadeOut {
             from { opacity: 1; transform: translateY(0); }
             to { opacity: 0; transform: translateY(-20px); }
         }
+        
         @media (max-width: 768px) {
             .cart-item {
                 flex-direction: column;
                 align-items: flex-start;
             }
+            
             .cart-item img {
-                margin-bottom: 10px;
+                margin-bottom: 15px;
             }
+            
             .cart-item button {
-                margin-top: 10px;
+                margin-top: 15px;
                 align-self: flex-end;
+            }
+            
+            .page-title {
+                font-size: 2em;
             }
         }
     </style>
 </head>
 <body>
+    <?php include 'includes/header.php'; ?>
     <div id="notification"></div>
     
-    <header>
-        <h1>Your Cart</h1>
-        <nav>
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="search.php">Search Products</a></li>
-                <li><a href="cart.php">Cart (<span id="cart-count"><?php echo count($cartItems); ?></span>)</a></li>
-                <li><a href="checkout.php">Checkout</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <main>
         <div class="cart-container">
+            <h1 class="page-title">🛒 Your Cart</h1>
+            
             <?php if (empty($cartItems)): ?>
                 <div class="empty-cart">
                     <h2>Your cart is empty</h2>
@@ -191,9 +299,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
         </div>
     </main>
 
-    <footer>
-        <p>Contact us: 0766191751</p>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
 
     <script>
     // Function to show notification

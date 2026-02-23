@@ -20,7 +20,11 @@ if (isset($_POST['product_id'])) {
     }
 
     if (!$alreadyInCart) {
-        $_SESSION['cart'][] = ['id' => $productId, 'restaurant' => $restaurant];
+        $_SESSION['cart'][] = [
+            'id' => $productId, 
+            'restaurant' => $restaurant,
+            'quantity' => 1
+        ];
         echo json_encode(['success' => true]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Product already in cart.']);

@@ -28,98 +28,362 @@ foreach ($results as $index => $product) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Dishes - Smart Dine</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Same CSS from index.html can be included here */
-        .product-grid {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 30px;
             display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 20px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        .product {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            text-align: center;
-            transition: transform 0.3s ease;
+        
+        header h1 {
+            font-size: 2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
         }
-        .product:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
-        .product img {
-            max-width: 100%;
-            height: auto;
-            max-height: 150px;
-            object-fit: contain;
-        }
-        .product button {
-            background-color: #333;
+        
+        .user-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background-color 0.3s;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
         }
-        .product button:hover {
-            background-color: #555;
+        
+        .logout-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
         }
-        #search-form {
-            margin-bottom: 20px;
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        }
+        
+        nav {
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        nav ul {
+            list-style: none;
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            justify-content: center;
         }
-        #search-form input, 
+        
+        nav ul li a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            font-weight: 500;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        nav ul li a:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 30px;
+        }
+        
+        .search-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .search-header h2 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        #search-form {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #search-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px 25px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 30px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        #search-form input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
         #search-form select {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
+            padding: 15px 25px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 30px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 200px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
         }
+        
+        #search-form select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
         #search-form button {
-            background-color: #333;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
-        @media (max-width: 768px) {
-            .product-grid {
-                flex-direction: column;
-            }
-            #search-form {
-                flex-direction: column;
-            }
-            #search-form input, 
-            #search-form select,
-            #search-form button {
-                width: 100%;
-            }
+        
+        #search-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
         }
+        
+        .results-count {
+            text-align: center;
+            color: white;
+            font-size: 1.3em;
+            margin: 30px 0;
+            font-weight: 600;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .product {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 25px;
+        }
+        
+        .product h3 {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .product-restaurant {
+            color: #333;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            color: #667eea;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+        
+        .product button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.05em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .product button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .no-results h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        
+        .no-results p {
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        footer {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            color: #333;
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            font-weight: 500;
+        }
+        
         #notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 25px;
-            border-radius: 4px;
+            padding: 15px 30px;
+            border-radius: 30px;
             display: none;
-            z-index: 1000;
-            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 2000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            #search-form {
+                flex-direction: column;
+            }
+            
+            #search-form input,
+            #search-form select,
+            #search-form button {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-header {
+                padding: 30px 20px;
+            }
+            
+            .search-header h2 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
@@ -127,40 +391,75 @@ foreach ($results as $index => $product) {
     <div id="notification"></div>
     
     <header>
-        <h1>Search Dishes</h1>
+        <div class="header-content">
+            <h1>🔍 Search Dishes</h1>
+            <div class="user-info">
+                <span class="user-badge">
+                    👤 <?php echo htmlspecialchars($_SESSION['username']); ?>
+                </span>
+                <a href="logout.php" class="logout-btn">🚪 Logout</a>
+            </div>
+        </div>
         <nav>
             <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="search.php">Search Dishes</a></li>
-                <li><a href="cart.php">Cart (<span id="cart-count">0</span>)</a></li>
-                <li><a href="checkout.php">Checkout</a></li>
+                <li><a href="home.php">🏠 Home</a></li>
+                <li><a href="search.php">🔍 Search</a></li>
+                <li><a href="profile.php">👤 Profile</a></li>
+                <li><a href="orders.php">📦 Orders</a></li>
+                <li><a href="cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <li><a href="admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">⚙️ Admin</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
 
     <main>
-        <form id="search-form" action="search.php" method="GET">
-            <input type="text" name="query" placeholder="Search for dishes..." value="<?php echo htmlspecialchars($query); ?>">
-            <select name="category">
-                <option value="">All Categories</option>
-                <option value="appetizer" <?php echo $category === 'appetizer' ? 'selected' : ''; ?>>Appetizers</option>
-                <option value="main-course" <?php echo $category === 'main-course' ? 'selected' : ''; ?>>Main Courses</option>
-                <option value="dessert" <?php echo $category === 'dessert' ? 'selected' : ''; ?>>Desserts</option>
-                <option value="beverage" <?php echo $category === 'beverage' ? 'selected' : ''; ?>>Beverages</option>
-            </select>
-            <button type="submit">Search</button>
-        </form>
+        <div class="search-header">
+            <h2>Find Your Favorite Dish</h2>
+            <form id="search-form" action="search.php" method="GET">
+                <input type="text" 
+                       name="query" 
+                       placeholder="🔍 Search for dishes..." 
+                       value="<?php echo htmlspecialchars($query); ?>">
+                <select name="category">
+                    <option value="">📋 All Categories</option>
+                    <option value="appetizer" <?php echo $category === 'appetizer' ? 'selected' : ''; ?>>🥗 Appetizers</option>
+                    <option value="main-course" <?php echo $category === 'main-course' ? 'selected' : ''; ?>>🍽️ Main Courses</option>
+                    <option value="dessert" <?php echo $category === 'dessert' ? 'selected' : ''; ?>>🍰 Desserts</option>
+                    <option value="beverage" <?php echo $category === 'beverage' ? 'selected' : ''; ?>>🥤 Beverages</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+        </div>
 
-        <div id="search-results" class="product-grid">
+        <?php if (!empty($query) || !empty($category)): ?>
+            <div class="results-count">
+                <?php echo count($results); ?> dish<?php echo count($results) !== 1 ? 'es' : ''; ?> found
+            </div>
+        <?php endif; ?>
+
+        <div class="product-grid">
             <?php if (empty($results)): ?>
-                <p class="no-results">No products found matching your search criteria.</p>
+                <div class="no-results">
+                    <h2>🍽️ No dishes found</h2>
+                    <p>Try adjusting your search criteria or browse all categories</p>
+                </div>
             <?php else: ?>
                 <?php foreach ($results as $product): ?>
                     <div class="product">
-                        <img src="assets/images/food pics/<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" onerror="this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_17e19a89e35%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3A-apple-system%2CBlinkMacSystemFont%2C%26quot%3BSegoe%20UI%26quot%3B%2CRoboto%2C%26quot%3BHelvetica%20Neue%26quot%3B%2CArial%2C%26quot%3BNoto%20Sans%26quot%3B%2Csans-serif%2C%26quot%3BApple%20Color%20Emoji%26quot%3B%2C%26quot%3BSegoe%20UI%20Emoji%26quot%3B%2C%26quot%3BSegoe%20UI%20Symbol%26quot%3B%2C%26quot%3BNoto%20Color%20Emoji%26quot%3B%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_17e19a89e35%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23373940%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22108.5390625%22%20y%3D%2297.5%22%3E<?php echo $product['name']; ?>%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E'">
-                        <h3><?php echo $product['name']; ?></h3>
-                        <p><?php echo $product['price']; ?></p>
-                        <button onclick="addToCart(<?php echo isset($product['id']) ? $product['id'] : $index + 1; ?>, '<?php echo addslashes($product['name']); ?>', '<?php echo $product['price']; ?>')">Add to Cart</button>
+                        <img src="assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
+                             alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <div class="product-info">
+                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <div class="product-restaurant">
+                                🏪 <?php echo htmlspecialchars($product['restaurant']); ?>
+                            </div>
+                            <div class="product-price"><?php echo htmlspecialchars($product['price']); ?></div>
+                            <button onclick="addToCart(<?php echo isset($product['id']) ? $product['id'] : $index + 1; ?>, '<?php echo addslashes($product['name']); ?>', '<?php echo htmlspecialchars($product['price']); ?>', '<?php echo addslashes($product['restaurant']); ?>')">
+                                🛒 Add to Cart
+                            </button>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -168,7 +467,7 @@ foreach ($results as $index => $product) {
     </main>
 
     <footer>
-        <p>Contact us: 0766191751</p>
+        <p>📞 Contact us: +123-456-7890 | Smart Dine - Taste the Difference 🍽️</p>
     </footer>
 
     <script>
@@ -184,11 +483,9 @@ foreach ($results as $index => $product) {
     }
 
     // Function to add a product to the cart
-    function addToCart(productId, productName, productPrice) {
-        // Show loading indicator
+    function addToCart(productId, productName, productPrice, restaurant = 'Smart Dine') {
         showNotification('Adding to cart...');
         
-        // Send an AJAX request to add the product to the cart
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "api/add_to_cart.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -199,8 +496,8 @@ foreach ($results as $index => $product) {
                     try {
                         const response = JSON.parse(xhr.responseText);
                         if (response.success) {
-                            showNotification(`${productName} added to cart!`);
-                            updateCartCount(); // Update the cart count displayed on the page
+                            showNotification(`✅ ${productName} added to cart!`);
+                            updateCartCount();
                         } else {
                             showNotification(response.message || "Failed to add product to cart.");
                         }
@@ -214,8 +511,7 @@ foreach ($results as $index => $product) {
             }
         };
 
-        // Send the product ID to the server
-        xhr.send(`product_id=${productId}`);
+        xhr.send(`product_id=${productId}&restaurant=${encodeURIComponent(restaurant)}`);
     }
 
     // Function to update the cart count displayed on the page

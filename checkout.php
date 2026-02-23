@@ -43,7 +43,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 
     // Calculate total
     foreach ($cartItems as $item) {
-        $priceStr = str_replace('$', '', $item['price']);
+        $priceStr = str_replace(['UGX', ' '], '', $item['price']);
         $price = floatval($priceStr);
         $total += $price;
     }
@@ -51,13 +51,46 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 
 // Process checkout form submission
 $orderSuccess = false;
+$orderId = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
-    // In a real app, you would process payment here
-    // For this demo, we'll just simulate a successful order
-    $orderSuccess = true;
+    $customerName = $_POST['name'];
+    $customerEmail = $_POST['email'];
+    $deliveryAddress = $_POST['address'];
+    $deliveryCity = $_POST['city'];
+    $deliveryZip = $_POST['zip'];
     
-    // Clear the cart after successful order
-    $_SESSION['cart'] = [];
+    try {
+        // Start transaction
+        $conn->beginTransaction();
+        
+        // Create order
+        $stmt = $conn->prepare("
+            INSERT INTO orders (user_id, total_amount, status, delivery_address, delivery_city, delivery_zip, customer_name, customer_email, payment_method)
+            VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, 'credit_card')
+        ");
+        $stmt->execute([$_SESSION['user_id'], $total, $deliveryAddress, $deliveryCity, $deliveryZip, $customerName, $customerEmail]);
+        $orderId = $conn->lastInsertId();
+        
+        // Add order items
+        $stmt = $conn->prepare("
+            INSERT INTO order_items (order_id, product_id, product_name, product_price, quantity, restaurant)
+            VALUES (?, ?, ?, ?, 1, ?)
+        ");
+        
+        foreach ($cartItems as $item) {
+            $stmt->execute([$orderId, $item['id'], $item['name'], $item['price'], $item['restaurant']]);
+        }
+        
+        // Commit transaction
+        $conn->commit();
+        
+        // Clear the cart
+        $_SESSION['cart'] = [];
+        $orderSuccess = true;
+    } catch (Exception $e) {
+        $conn->rollBack();
+        $message = 'Error processing order: ' . $e->getMessage();
+    }
 }
 ?>
 
@@ -66,129 +99,230 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - Nate Liquor Stores</title>
+    <title>Checkout - Smart Dine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
         .checkout-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
+        
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
         .checkout-form {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-top: 20px;
         }
+        
         .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        .order-summary {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
             margin-bottom: 20px;
         }
-        .order-summary h3 {
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
         }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .order-summary {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .order-summary h3 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.5em;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
         .order-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            color: #333;
+            font-size: 1.05em;
         }
+        
         .order-total {
-            font-weight: bold;
-            border-top: 1px solid #ddd;
+            font-weight: 600;
+            font-size: 1.3em;
+            border-top: 2px solid #f0f0f0;
             margin-top: 15px;
-            padding-top: 10px;
+            padding-top: 15px;
+            color: #333;
         }
+        
         .checkout-btn {
-            background-color: #4CAF50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 12px 20px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 4px;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 1.1em;
+            font-weight: 600;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
         }
+        
         .checkout-btn:hover {
-            background-color: #45a049;
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
+        
         .order-success {
-            background-color: #dff0d8;
-            color: #3c763d;
-            padding: 20px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center;
             margin-top: 20px;
         }
+        
         .order-success h2 {
-            margin-bottom: 15px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            margin-bottom: 20px;
         }
+        
+        .order-success p {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .order-success a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+        
         .empty-cart-message {
             text-align: center;
-            padding: 30px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-top: 20px;
         }
-        @media (max-width: 768px) {
-            .checkout-container {
-                padding: 0 15px;
-            }
+        
+        .empty-cart-message h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            margin-bottom: 15px;
         }
+        
+        .empty-cart-message p {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        
+        .empty-cart-message a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
         #notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 15px 25px;
-            border-radius: 4px;
+            border-radius: 15px;
             display: none;
             z-index: 1000;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                padding: 0 15px;
+            }
+            
+            .page-title {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
+    <?php include 'includes/header.php'; ?>
     <div id="notification"></div>
     
-    <header>
-        <h1>Checkout</h1>
-        <nav>
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="search.php">Search Products</a></li>
-                <li><a href="cart.php">Cart (<span id="cart-count"><?php echo count($cartItems); ?></span>)</a></li>
-                <li><a href="checkout.php">Checkout</a></li>
-            </ul>
-        </nav>
-    </header>
-
     <main>
         <div class="checkout-container">
+            <h1 class="page-title">💳 Checkout</h1>
+            
             <?php if ($orderSuccess): ?>
                 <div class="order-success">
                     <h2>Order Placed Successfully!</h2>
-                    <p>Thank you for your purchase. Your order has been placed and will be processed shortly.</p>
+                    <p>Thank you for your purchase. Your order #<?php echo $orderId; ?> has been placed and will be processed shortly.</p>
                     <p>A confirmation email has been sent to your email address.</p>
-                    <p><a href="index.html">Continue Shopping</a></p>
+                    <p><a href="orders.php">View My Orders</a> | <a href="home.php">Continue Shopping</a></p>
                 </div>
             <?php elseif (empty($cartItems)): ?>
                 <div class="empty-cart-message">
@@ -254,9 +388,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cc_number'])) {
         </div>
     </main>
 
-    <footer>
-        <p>Contact us: 0766191751</p>
-    </footer>
+    <?php include 'includes/footer.php'; ?>
 
     <script>
     // Function to show notification
