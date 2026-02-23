@@ -3,7 +3,7 @@ session_start();
 require 'includes/connect.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../auth/login.php');
     exit();
 }
 

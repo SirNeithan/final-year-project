@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
-        header('Location: home.php', true, 302);
+        header('Location: ../../home.php', true, 302);
         exit();
       } else {
         $error = $user ? 'Invalid password' : 'User not found';

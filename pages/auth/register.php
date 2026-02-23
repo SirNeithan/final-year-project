@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['user_id'] = $conn->lastInsertId();
         $_SESSION['username'] = $regUsername;
         $_SESSION['role'] = 'user';
-        header('Location: home.php', true, 302);
+        header('Location: ../../home.php', true, 302);
         exit();
       }
     } catch (Exception $e) {
