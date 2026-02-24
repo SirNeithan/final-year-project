@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'includes/connect.php';
+require '../../includes/connect.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../auth/login.php');
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $pageTitle = "Main Courses - Smart Dine";
 $headerTitle = "🍽️ Main Courses";
 
-$products = json_decode(file_get_contents('data/products.json'), true);
+$products = json_decode(file_get_contents('../../data/products.json'), true);
 $restaurant = isset($_GET['restaurant']) ? $_GET['restaurant'] : null;
 
 $results = array_filter($products, function ($product) use ($restaurant) {
@@ -27,7 +27,7 @@ if ($restaurant) {
     $headerTitle = "🍽️ Main Courses - " . htmlspecialchars($restaurant);
 }
 
-include 'includes/header.php';
+include '../../includes/header.php';
 ?>
 
 <style>
@@ -125,6 +125,78 @@ include 'includes/header.php';
         transform: scale(1.05);
         box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
     }
+    
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 25px 15px;
+        }
+        
+        .hero-section h2 {
+            font-size: 1.8em;
+        }
+        
+        .product-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+            padding: 0 10px;
+        }
+        
+        .product {
+            padding: 15px;
+        }
+        
+        .product img {
+            height: 180px;
+        }
+        
+        .product h3 {
+            font-size: 1.1em;
+        }
+        
+        .product p {
+            font-size: 1.3em;
+        }
+        
+        .product button {
+            padding: 12px;
+            font-size: 0.95em;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .hero-section {
+            padding: 20px 10px;
+        }
+        
+        .hero-section h2 {
+            font-size: 1.5em;
+        }
+        
+        .hero-section p {
+            font-size: 0.95em;
+        }
+        
+        .product {
+            padding: 12px;
+        }
+        
+        .product img {
+            height: 150px;
+        }
+        
+        .product h3 {
+            font-size: 1em;
+        }
+        
+        .product p {
+            font-size: 1.2em;
+        }
+        
+        .product button {
+            padding: 10px;
+            font-size: 0.9em;
+        }
+    }
 </style>
 
 <div class="hero-section">
@@ -158,4 +230,56 @@ include 'includes/header.php';
     <?php endif; ?>
 </div>
 
-<?php include 'includes/footer.php'; ?>
+<script>
+// Override addToCart function for correct API path from subdirectory
+function addToCart(productId, productName, productPrice, restaurant) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "../../api/add_to_cart.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    showNotification("? " + productName + " added to cart!");
+                    updateCartCount();
+                } else {
+                    showNotification("? " + (response.message || "Failed to add to cart"));
+                }
+            } catch (e) {
+                showNotification("? Error processing request");
+                console.error("Error:", e, xhr.responseText);
+            }
+        }
+    };
+
+    xhr.send(+"product_id=${productId}&product_name=${encodeURIComponent(productName)}&product_price=${encodeURIComponent(productPrice)}&restaurant=${encodeURIComponent(restaurant)}"+);
+}
+
+// Override updateCartCount for correct API path
+function updateCartCount() {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", "../../api/get_cart_count.php", true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    const cartCountElement = document.getElementById("cart-count");
+                    if (cartCountElement) {
+                        cartCountElement.textContent = response.count;
+                    }
+                }
+            } catch (e) {
+                console.error("Error updating cart count:", e);
+            }
+        }
+    };
+
+    xhr.send();
+}
+</script>
+
+<?php include '../../includes/footer.php'; ?>

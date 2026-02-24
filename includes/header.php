@@ -172,11 +172,68 @@ if (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) {
                 flex-direction: column;
                 text-align: center;
                 gap: 15px;
+                padding: 15px;
+            }
+            
+            header h1 {
+                font-size: 1.5em;
             }
             
             .user-info {
                 flex-direction: column;
                 width: 100%;
+                gap: 10px;
+            }
+            
+            .user-badge {
+                font-size: 0.85em;
+                padding: 8px 15px;
+            }
+            
+            .logout-btn {
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
+            
+            nav ul {
+                gap: 8px;
+                padding: 0 10px;
+            }
+            
+            nav ul li a {
+                font-size: 0.85em;
+                padding: 8px 12px;
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.3em;
+            }
+            
+            .header-content {
+                padding: 10px;
+            }
+            
+            nav ul {
+                gap: 6px;
+                justify-content: center;
+            }
+            
+            nav ul li a {
+                font-size: 0.75em;
+                padding: 6px 10px;
+            }
+            
+            .user-badge {
+                font-size: 0.8em;
+                padding: 6px 12px;
+            }
+            
+            .logout-btn {
+                font-size: 0.85em;
+                padding: 6px 14px;
             }
         }
     </style>

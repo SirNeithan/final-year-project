@@ -221,7 +221,140 @@ try {
                 gap: 10px;
             }
         }
-    </style>
+    
+    @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+        
+        header {
+            padding: 15px;
+        }
+        
+        header h1 {
+            font-size: 1.5em;
+        }
+        
+        header nav ul {
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        header nav a {
+            font-size: 0.9em;
+            padding: 8px 12px;
+        }
+        
+        .admin-container {
+            padding: 10px;
+        }
+        
+        .admin-container > h2 {
+            font-size: 1.5em;
+        }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        
+        .stat-card {
+            padding: 20px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+        }
+        
+        .orders-table, .users-table, .products-table {
+            font-size: 0.85em;
+        }
+        
+        .orders-table th, .orders-table td,
+        .users-table th, .users-table td,
+        .products-table th, .products-table td {
+            padding: 8px;
+        }
+        
+        .add-form {
+            padding: 20px;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            font-size: 0.95em;
+            padding: 10px;
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .items-table {
+            font-size: 0.85em;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        header h1 {
+            font-size: 1.3em;
+        }
+        
+        header nav a {
+            font-size: 0.85em;
+            padding: 6px 10px;
+        }
+        
+        .admin-container > h2 {
+            font-size: 1.3em;
+        }
+        
+        .stat-card {
+            padding: 15px;
+        }
+        
+        .stat-value {
+            font-size: 1.8em;
+        }
+        
+        .stat-label {
+            font-size: 0.95em;
+        }
+        
+        .orders-table, .users-table, .products-table {
+            font-size: 0.75em;
+        }
+        
+        .orders-table th, .orders-table td,
+        .users-table th, .users-table td,
+        .products-table th, .products-table td {
+            padding: 6px;
+        }
+        
+        .status-select, .role-select {
+            font-size: 0.85em;
+            padding: 6px;
+        }
+        
+        .update-btn, .delete-btn, .view-btn, .action-btn {
+            font-size: 0.8em;
+            padding: 6px 10px;
+        }
+        
+        .add-form {
+            padding: 15px;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            font-size: 0.9em;
+            padding: 8px;
+        }
+        
+        .btn {
+            font-size: 0.9em;
+            padding: 10px 20px;
+        }
+    }
+</style>
 </head>
 <body>
     <header>

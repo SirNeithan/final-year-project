@@ -300,7 +300,7 @@ if ($restaurant) {
         }
         
         .product p {
-            color: #667eea;
+            
             font-size: 1.5em;
             font-weight: 700;
             margin: 15px 0;
@@ -366,6 +366,7 @@ if ($restaurant) {
                 flex-direction: column;
                 text-align: center;
                 gap: 15px;
+                padding: 15px;
             }
             
             .user-info {
@@ -374,15 +375,87 @@ if ($restaurant) {
             }
             
             .hero-section {
-                padding: 30px 20px;
+                padding: 25px 15px;
             }
             
             .hero-section h2 {
-                font-size: 2em;
+                font-size: 1.8em;
             }
             
-            .restaurant-grid, .product-grid {
+            .restaurant-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 0 10px;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 0 10px;
+            }
+            
+            .product {
+                padding: 15px;
+            }
+            
+            .product img {
+                height: 180px;
+            }
+            
+            .product h3 {
+                font-size: 1.1em;
+            }
+            
+            .product p {
+                font-size: 1.3em;
+            }
+            
+            .product button {
+                padding: 12px;
+                font-size: 0.95em;
+            }
+            
+            #notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                padding: 12px 20px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-section h2 {
+                font-size: 1.5em;
+            }
+            
+            .hero-section p {
+                font-size: 0.95em;
+            }
+            
+            .restaurant {
+                padding: 15px;
+            }
+            
+            .restaurant h3 {
+                font-size: 1.1em;
+            }
+            
+            .product img {
+                height: 150px;
+            }
+            
+            .product h3 {
+                font-size: 1em;
+            }
+            
+            .product p {
+                font-size: 1.2em;
+            }
+            
+            .product button {
+                padding: 10px;
+                font-size: 0.9em;
             }
         }
     </style>
@@ -407,10 +480,10 @@ if ($restaurant) {
             <ul>
                 <li><a href="home.php">🏠 Home</a></li>
                 <?php if ($restaurant): ?>
-                    <li><a href="appetizers.php?restaurant=<?php echo urlencode($restaurant); ?>">🥗 Appetizers</a></li>
-                    <li><a href="main-courses.php?restaurant=<?php echo urlencode($restaurant); ?>">🍽️ Main Courses</a></li>
-                    <li><a href="desserts.php?restaurant=<?php echo urlencode($restaurant); ?>">🍰 Desserts</a></li>
-                    <li><a href="beverages.php?restaurant=<?php echo urlencode($restaurant); ?>">🥤 Beverages</a></li>
+                    <li><a href="pages/categories/appetizers.php?restaurant=<?php echo urlencode($restaurant); ?>">🥗 Appetizers</a></li>
+                    <li><a href="pages/categories/main-courses.php?restaurant=<?php echo urlencode($restaurant); ?>">🍽️ Main Courses</a></li>
+                    <li><a href="pages/categories/desserts.php?restaurant=<?php echo urlencode($restaurant); ?>">🍰 Desserts</a></li>
+                    <li><a href="pages/categories/beverages.php?restaurant=<?php echo urlencode($restaurant); ?>">🥤 Beverages</a></li>
                 <?php endif; ?>
                 <li><a href="pages/user/search.php">🔍 Search</a></li>
                 <li><a href="pages/user/profile.php">👤 Profile</a></li>
@@ -474,7 +547,7 @@ if ($restaurant) {
     </main>
 
     <footer>
-        <p>📞 Contact us: +123-456-7890 | Smart Dine - Taste the Difference 🍽️</p>
+        <p>📞 Contact us: 0766191751| Smart Dine - Taste the Difference 🍽️</p>
     </footer>
 
     <script src="assets/js/script.js"></script>

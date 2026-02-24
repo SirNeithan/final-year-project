@@ -200,7 +200,105 @@ try {
                 font-size: 0.9em;
             }
         }
-    </style>
+    
+    @media (max-width: 768px) {
+        body {
+            padding: 10px;
+        }
+        
+        .page-title {
+            font-size: 2em;
+        }
+        
+        .cart-item, .order-card, .profile-section, .checkout-form, .order-summary {
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .cart-item-info h3 {
+            font-size: 1.1em;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            font-size: 0.95em;
+            padding: 10px;
+        }
+        
+        .checkout-btn, .back-btn, .view-details-btn {
+            padding: 12px 20px;
+            font-size: 0.95em;
+        }
+        
+        .order-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .order-details, .info-grid {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        
+        .items-table {
+            font-size: 0.85em;
+        }
+        
+        .items-table th, .items-table td {
+            padding: 8px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .page-title {
+            font-size: 1.6em;
+        }
+        
+        .cart-item, .order-card, .profile-section {
+            padding: 12px;
+        }
+        
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+        }
+        
+        .cart-item-info h3 {
+            font-size: 1em;
+        }
+        
+        .form-group input, .form-group select {
+            font-size: 0.9em;
+            padding: 8px;
+        }
+        
+        .checkout-btn, .back-btn {
+            padding: 10px 16px;
+            font-size: 0.9em;
+        }
+        
+        .items-table {
+            font-size: 0.75em;
+        }
+        
+        .items-table th, .items-table td {
+            padding: 6px;
+        }
+        
+        .order-id {
+            font-size: 1.1em;
+        }
+        
+        .detail-value {
+            font-size: 0.95em;
+        }
+    }
+</style>
 </head>
 <body>
     <?php include '../../includes/header.php'; ?>

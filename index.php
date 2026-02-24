@@ -219,7 +219,7 @@
   </div>
 
   <footer>
-    <p>📞 Contact us: +123-456-7890 | Smart Dine - Taste the Difference 🍽️</p>
+    <p>📞 Contact us: 0766191751| Smart Dine - Taste the Difference 🍽️</p>
   </footer>
 
 </body>

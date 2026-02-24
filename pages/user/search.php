@@ -355,6 +355,7 @@ foreach ($results as $index => $product) {
                 flex-direction: column;
                 text-align: center;
                 gap: 15px;
+                padding: 15px;
             }
             
             .user-info {
@@ -364,6 +365,7 @@ foreach ($results as $index => $product) {
             
             #search-form {
                 flex-direction: column;
+                gap: 10px;
             }
             
             #search-form input,
@@ -375,14 +377,91 @@ foreach ($results as $index => $product) {
             
             .product-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 0 10px;
             }
             
             .search-header {
-                padding: 30px 20px;
+                padding: 25px 15px;
             }
             
             .search-header h2 {
-                font-size: 2em;
+                font-size: 1.8em;
+            }
+            
+            .product {
+                padding: 15px;
+            }
+            
+            .product img {
+                height: 180px;
+            }
+            
+            .product h3 {
+                font-size: 1.1em;
+            }
+            
+            .product p {
+                font-size: 1.3em;
+            }
+            
+            .product button {
+                padding: 12px;
+                font-size: 0.95em;
+            }
+            
+            #notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                padding: 12px 20px;
+                font-size: 0.9em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .search-header {
+                padding: 20px 10px;
+            }
+            
+            .search-header h2 {
+                font-size: 1.5em;
+            }
+            
+            .search-header p {
+                font-size: 0.95em;
+            }
+            
+            #search-form input,
+            #search-form select {
+                font-size: 0.9em;
+                padding: 10px;
+            }
+            
+            #search-form button {
+                font-size: 0.9em;
+                padding: 10px;
+            }
+            
+            .product {
+                padding: 12px;
+            }
+            
+            .product img {
+                height: 150px;
+            }
+            
+            .product h3 {
+                font-size: 1em;
+            }
+            
+            .product p {
+                font-size: 1.2em;
+            }
+            
+            .product button {
+                padding: 10px;
+                font-size: 0.9em;
             }
         }
     </style>
@@ -467,7 +546,7 @@ foreach ($results as $index => $product) {
     </main>
 
     <footer>
-        <p>📞 Contact us: +123-456-7890 | Smart Dine - Taste the Difference 🍽️</p>
+        <p>📞 Contact us: 0766191751| Smart Dine - Taste the Difference 🍽️</p>
     </footer>
 
     <script>
