@@ -1,0 +1,134 @@
+DATABASE PRICE FIX GUIDE
+========================
+
+PROBLEM: Order summary showing old prices like "UGX 200" instead of new prices like "UGX 28,000"
+
+CAUSE: The database still has old product prices even though products.json was updated.
+
+SOLUTION: Update the database with the new prices.
+
+==================================
+OPTION 1: UPDATE EXISTING DATABASE
+==================================
+
+If you already have data (users, orders, etc.) that you want to keep:
+
+1. Open your MySQL/MariaDB command line or phpMyAdmin
+
+2. Run the update script:
+   
+   mysql -u root -p smartdine < data/update_prices.sql
+   
+   OR copy and paste the SQL commands from data/update_prices.sql into phpMyAdmin
+
+3. Verify the update:
+   
+   SELECT name, price FROM products LIMIT 10;
+   
+   You should see prices like "UGX 25,000" not "UGX 200"
+
+==================================
+OPTION 2: FRESH DATABASE SETUP
+==================================
+
+If you want to start fresh (WARNING: This deletes all data):
+
+1. Drop and recreate the database:
+   
+   DROP DATABASE IF EXISTS smartdine;
+   CREATE DATABASE smartdine;
+   
+2. Import the updated SQL file:
+   
+   mysql -u root -p smartdine < data/smartdine.sql
+   
+3. Add transaction_id column:
+   
+   mysql -u root -p smartdine < data/add_transaction_id.sql
+
+==================================
+OPTION 3: MANUAL UPDATE (phpMyAdmin)
+==================================
+
+1. Open phpMyAdmin
+2. Select 'smartdine' database
+3. Click on 'products' table
+4. Click 'SQL' tab
+5. Copy and paste this:
+
+   UPDATE products SET price = 'UGX 28,000' WHERE name = 'Chocolate Cake';
+   UPDATE products SET price = 'UGX 32,000' WHERE name = 'Cheesecake';
+   UPDATE products SET price = 'UGX 45,000' WHERE name = 'Cheeseburger';
+   -- (see data/update_prices.sql for complete list)
+
+6. Click 'Go'
+
+==================================
+VERIFICATION STEPS
+==================================
+
+After updating, verify the fix:
+
+1. Go to your website
+2. Add "Chocolate Cake" to cart
+3. View cart
+4. Check Order Summary
+
+BEFORE FIX:
+  Chocolate Cake    UGX 200
+  Total:            UGX 200
+
+AFTER FIX:
+  Chocolate Cake    UGX 28,000
+  Total:            UGX 28,000
+
+==================================
+TROUBLESHOOTING
+==================================
+
+Q: Still seeing old prices?
+A: Clear your browser cache and refresh the page
+
+Q: Getting SQL errors?
+A: Make sure you're connected to the correct database:
+   USE smartdine;
+
+Q: Products not showing?
+A: Check if products table exists:
+   SHOW TABLES;
+   SELECT COUNT(*) FROM products;
+
+Q: Want to check current prices?
+A: Run this query:
+   SELECT id, name, price, category FROM products ORDER BY name;
+
+==================================
+FILES UPDATED
+==================================
+
+✓ data/products.json - Updated with new prices
+✓ data/smartdine.sql - Updated INSERT statements
+✓ data/update_prices.sql - NEW: Update script for existing database
+✓ pages/user/cart.php - Fixed price calculation
+✓ pages/user/checkout.php - Fixed price display
+✓ All other PHP files - Updated to handle comma formatting
+
+==================================
+IMPORTANT NOTES
+==================================
+
+1. The application uses products.json as fallback if database fails
+2. Both database and JSON file now have matching prices
+3. All prices are in UGX (Ugandan Shillings)
+4. Prices range from 20,000 to 80,000 UGX
+5. Comma formatting is handled automatically in PHP
+
+==================================
+QUICK FIX COMMAND
+==================================
+
+If you just want to fix it quickly, run this one command:
+
+mysql -u root -p smartdine < data/update_prices.sql
+
+Then refresh your browser!

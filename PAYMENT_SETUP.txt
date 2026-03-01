@@ -1,0 +1,61 @@
+PAYMENT SYSTEM SETUP INSTRUCTIONS
+==================================
+
+1. UPDATE DATABASE SCHEMA
+   Run this command in your MySQL/MariaDB:
+   
+   mysql -u root -p smartdine < data/add_transaction_id.sql
+   
+   Or manually run this SQL:
+   ALTER TABLE orders ADD COLUMN transaction_id VARCHAR(100) NULL AFTER payment_method;
+
+2. UPDATE PRODUCT PRICES IN DATABASE
+   If you already have products in your database, run:
+   
+   mysql -u root -p smartdine < data/update_prices.sql
+   
+   This will update all product prices to the new range (20,000 - 80,000 UGX)
+   
+   OR if setting up fresh database:
+   
+   mysql -u root -p < data/smartdine.sql
+
+3. TEST THE PAYMENT SYSTEM
+   - Go to your checkout page
+   - Use test card: 4532015112830366
+   - Expiry: 12/25 (any future date)
+   - CVV: 123 (any 3 digits)
+   - Fill in delivery details
+   - Click "Pay Now"
+
+3. WHAT WAS ADDED
+   - api/process_payment.php - Validates and simulates payment processing
+   - api/create_order.php - Creates order after successful payment
+   - Updated checkout.php with JavaScript payment handling
+   - Card validation (Luhn algorithm)
+   - Real-time input formatting
+   - Error handling and user feedback
+   - Transaction ID tracking
+
+4. FEATURES
+   ✓ Card number validation (Luhn algorithm)
+   ✓ Expiry date validation
+   ✓ CVV validation
+   ✓ Auto-formatting of card inputs
+   ✓ Loading states during processing
+   ✓ Clear error messages
+   ✓ Transaction ID generation
+   ✓ Order creation with payment tracking
+   ✓ Success page with order details
+
+5. IMPORTANT NOTES
+   - This is a SIMULATED payment system for educational purposes
+   - It does NOT process real payments
+   - Card data is NOT stored in the database
+   - 90% success rate is simulated for realism
+   - Always use test cards, never real card numbers
+
+6. DOCUMENTATION
+   See docs/PAYMENT_SYSTEM.md for complete documentation
+
+For questions or issues, check the console for error messages.

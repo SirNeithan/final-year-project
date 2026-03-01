@@ -40,10 +40,12 @@ CREATE TABLE IF NOT EXISTS orders (
     status VARCHAR(50) DEFAULT 'pending',
     delivery_address TEXT NOT NULL,
     delivery_city VARCHAR(100) NOT NULL,
-    delivery_zip VARCHAR(20) NOT NULL,
+    delivery_zip VARCHAR(20) NULL,
     customer_name VARCHAR(255) NOT NULL,
     customer_email VARCHAR(255) NOT NULL,
+    customer_phone VARCHAR(20) NULL,
     payment_method VARCHAR(50) DEFAULT 'credit_card',
+    transaction_id VARCHAR(100) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE

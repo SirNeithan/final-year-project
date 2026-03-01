@@ -69,7 +69,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users - Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         * {
@@ -80,18 +80,18 @@ try {
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff;
             min-height: 100vh;
             padding: 20px;
         }
         
         header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 20px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
         }
         
         header h1 {
@@ -130,15 +130,15 @@ try {
         .message {
             padding: 15px 20px;
             margin-bottom: 20px;
-            background: rgba(17, 153, 142, 0.95);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
             border-radius: 15px;
             font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
         }
         
         .error-message {
-            background: rgba(235, 51, 73, 0.95);
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
         }
         
         .stats-grid {
@@ -149,13 +149,13 @@ try {
         }
         
         .stat-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
             text-align: center;
             transition: transform 0.3s ease;
+            border: 1px solid #f0f0f0;
         }
         
         .stat-card:hover {
@@ -179,20 +179,20 @@ try {
         }
         
         .admin-container > h2 {
-            color: white;
+            color: #333;
             font-size: 1.8em;
             margin-bottom: 25px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-family: 'Playfair Display', serif;
         }
         
         .users-table {
             width: 100%;
             border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
         }
         
         .users-table th {
@@ -282,15 +282,14 @@ try {
         }
         
         footer {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: #f8f8f8;
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-top: 30px;
             text-align: center;
             color: #333;
             font-weight: 500;
+            border: 1px solid #f0f0f0;
         }
         
         @media (max-width: 768px) {

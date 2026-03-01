@@ -36,60 +36,65 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order #<?php echo $orderId; ?> - Smart Dine</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/elegant-theme.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            background: #ffffff;
         }
         
         .order-details-container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            transform: translateX(-5px);
         }
         
         .order-summary {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            padding: 30px;
+            background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            padding: 40px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
         }
         
         .order-header {
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 20px;
-            margin-bottom: 25px;
+            border-bottom: 2px solid #f5f5f5;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
         }
         
         .order-header h2 {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 2em;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: #333;
             margin-bottom: 10px;
         }
         
         .order-status {
             display: inline-block;
-            padding: 8px 20px;
-            border-radius: 25px;
+            padding: 10px 25px;
+            border-radius: 50px;
             font-weight: 600;
-            margin-left: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-size: 0.9em;
+            margin-left: 15px;
         }
         
         .status-pending {
@@ -114,38 +119,46 @@ try {
         
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
         
         .info-section {
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            background: #f8f8f8;
             border-radius: 15px;
         }
         
         .info-section h3 {
-            margin-top: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 1.1em;
-            margin-bottom: 12px;
-            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            color: #333;
+            font-size: 1.3em;
+            margin-bottom: 15px;
         }
         
         .info-section p {
-            margin: 8px 0;
+            margin: 10px 0;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .info-section strong {
             color: #333;
-            font-size: 0.95em;
+            font-weight: 600;
+        }
+        
+        .items-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 25px;
         }
         
         .items-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 25px;
+            margin-top: 20px;
             border-radius: 15px;
             overflow: hidden;
         }
@@ -153,168 +166,57 @@ try {
         .items-table th {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px;
+            padding: 18px;
             text-align: left;
             font-weight: 600;
         }
         
         .items-table td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+            padding: 18px;
+            border-bottom: 1px solid #f0f0f0;
             color: #333;
         }
         
         .items-table tr:hover {
-            background-color: #f9f9f9;
+            background-color: #f8f8f8;
         }
         
         .total-row {
-            font-weight: 600;
-            font-size: 1.2em;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-        
-        .back-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 15px;
-            display: inline-block;
-            margin-bottom: 20px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .back-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            font-weight: 700;
+            font-size: 1.3em;
+            background: #f8f8f8;
         }
         
         @media (max-width: 768px) {
-            .order-header h2 {
-                font-size: 1.5em;
-            }
-            
             .items-table {
                 font-size: 0.9em;
             }
+            
+            .items-table th,
+            .items-table td {
+                padding: 12px;
+            }
         }
-    
-    @media (max-width: 768px) {
-        body {
-            padding: 10px;
-        }
-        
-        .page-title {
-            font-size: 2em;
-        }
-        
-        .cart-item, .order-card, .profile-section, .checkout-form, .order-summary {
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .cart-item img {
-            width: 80px;
-            height: 80px;
-        }
-        
-        .cart-item-info h3 {
-            font-size: 1.1em;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            font-size: 0.95em;
-            padding: 10px;
-        }
-        
-        .checkout-btn, .back-btn, .view-details-btn {
-            padding: 12px 20px;
-            font-size: 0.95em;
-        }
-        
-        .order-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .order-details, .info-grid {
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        
-        .items-table {
-            font-size: 0.85em;
-        }
-        
-        .items-table th, .items-table td {
-            padding: 8px;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .page-title {
-            font-size: 1.6em;
-        }
-        
-        .cart-item, .order-card, .profile-section {
-            padding: 12px;
-        }
-        
-        .cart-item img {
-            width: 70px;
-            height: 70px;
-        }
-        
-        .cart-item-info h3 {
-            font-size: 1em;
-        }
-        
-        .form-group input, .form-group select {
-            font-size: 0.9em;
-            padding: 8px;
-        }
-        
-        .checkout-btn, .back-btn {
-            padding: 10px 16px;
-            font-size: 0.9em;
-        }
-        
-        .items-table {
-            font-size: 0.75em;
-        }
-        
-        .items-table th, .items-table td {
-            padding: 6px;
-        }
-        
-        .order-id {
-            font-size: 1.1em;
-        }
-        
-        .detail-value {
-            font-size: 0.95em;
-        }
-    }
-</style>
+    </style>
 </head>
 <body>
     <?php include '../../includes/header.php'; ?>
 
     <main>
         <div class="order-details-container">
-            <a href="orders.php" class="back-btn">← Back to Orders</a>
+            <a href="orders.php" class="back-link">← Back to Orders</a>
             
             <div class="order-summary">
                 <div class="order-header">
-                    <h2>Order #<?php echo $order['id']; ?>
+                    <h2>
+                        Order #<?php echo $order['id']; ?>
                         <span class="order-status status-<?php echo $order['status']; ?>">
                             <?php echo ucfirst($order['status']); ?>
                         </span>
                     </h2>
-                    <p>Placed on <?php echo date('F j, Y \a\t g:i A', strtotime($order['created_at'])); ?></p>
+                    <p style="color: #999; font-size: 1.05em;">
+                        Placed on <?php echo date('F j, Y \a\t g:i A', strtotime($order['created_at'])); ?>
+                    </p>
                 </div>
 
                 <div class="info-grid">
@@ -322,51 +224,59 @@ try {
                         <h3>Customer Information</h3>
                         <p><strong>Name:</strong> <?php echo htmlspecialchars($order['customer_name']); ?></p>
                         <p><strong>Email:</strong> <?php echo htmlspecialchars($order['customer_email']); ?></p>
+                        <?php if (!empty($order['phone'])): ?>
+                        <p><strong>Phone:</strong> <?php echo htmlspecialchars($order['phone']); ?></p>
+                        <?php endif; ?>
                     </div>
                     
                     <div class="info-section">
                         <h3>Delivery Address</h3>
                         <p><?php echo htmlspecialchars($order['delivery_address']); ?></p>
-                        <p><?php echo htmlspecialchars($order['delivery_city']); ?>, <?php echo htmlspecialchars($order['delivery_zip']); ?></p>
+                        <p><?php echo htmlspecialchars($order['delivery_city']); ?></p>
                     </div>
                     
                     <div class="info-section">
                         <h3>Payment Information</h3>
                         <p><strong>Method:</strong> <?php echo ucfirst(str_replace('_', ' ', $order['payment_method'])); ?></p>
                         <p><strong>Total:</strong> UGX <?php echo number_format($order['total_amount'], 0); ?></p>
+                        <?php if (!empty($order['transaction_id'])): ?>
+                        <p><strong>Transaction ID:</strong> <?php echo htmlspecialchars($order['transaction_id']); ?></p>
+                        <?php endif; ?>
                     </div>
                 </div>
 
-                <h3>Order Items</h3>
-                <table class="items-table">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Restaurant</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($orderItems as $item): 
-                            $priceNum = floatval(str_replace(['UGX', ' '], '', $item['product_price']));
-                            $subtotal = $priceNum * $item['quantity'];
-                        ?>
+                <div class="items-section">
+                    <h3>Order Items</h3>
+                    <table class="items-table">
+                        <thead>
                             <tr>
-                                <td><?php echo htmlspecialchars($item['product_name']); ?></td>
-                                <td><?php echo htmlspecialchars($item['restaurant']); ?></td>
-                                <td><?php echo $item['product_price']; ?></td>
-                                <td><?php echo $item['quantity']; ?></td>
-                                <td>UGX <?php echo number_format($subtotal, 0); ?></td>
+                                <th>Item</th>
+                                <th>Restaurant</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
                             </tr>
-                        <?php endforeach; ?>
-                        <tr class="total-row">
-                            <td colspan="4" style="text-align: right;">Total:</td>
-                            <td>UGX <?php echo number_format($order['total_amount'], 0); ?></td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($orderItems as $item): 
+                                $priceNum = floatval(str_replace(['UGX', 'KSh', ' ', ','], '', $item['product_price']));
+                                $subtotal = $priceNum * $item['quantity'];
+                            ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($item['product_name']); ?></td>
+                                    <td><?php echo htmlspecialchars($item['restaurant']); ?></td>
+                                    <td><?php echo $item['product_price']; ?></td>
+                                    <td><?php echo $item['quantity']; ?></td>
+                                    <td>UGX <?php echo number_format($subtotal, 0); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            <tr class="total-row">
+                                <td colspan="4" style="text-align: right;">Total:</td>
+                                <td>UGX <?php echo number_format($order['total_amount'], 0); ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>

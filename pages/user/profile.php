@@ -7,9 +7,6 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$pageTitle = "My Profile - Smart Dine";
-$headerTitle = "👤 My Profile";
-
 $userId = $_SESSION['user_id'];
 $message = '';
 $messageType = 'success';
@@ -69,286 +66,171 @@ try {
 } catch (Exception $e) {
     die('Error fetching user data: ' . $e->getMessage());
 }
-
-include '../../includes/header.php';
 ?>
 
-<style>
-    .profile-container {
-        max-width: 900px;
-        margin: 0 auto;
-    }
-    
-    .message {
-        padding: 20px;
-        margin-bottom: 30px;
-        border-radius: 15px;
-        font-weight: 500;
-        text-align: center;
-    }
-    
-    .message.success {
-        background: rgba(102, 126, 234, 0.1);
-        color: #667eea;
-        border: 2px solid rgba(102, 126, 234, 0.3);
-    }
-    
-    .message.error {
-        background: rgba(245, 87, 108, 0.1);
-        color: #f5576c;
-        border: 2px solid rgba(245, 87, 108, 0.3);
-    }
-    
-    .profile-section {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(10px);
-        padding: 40px;
-        margin-bottom: 30px;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    
-    .profile-section h2 {
-        font-size: 1.8em;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 25px;
-        font-weight: 700;
-    }
-    
-    .info-grid {
-        display: grid;
-        gap: 20px;
-    }
-    
-    .info-item {
-        padding: 20px;
-        background: rgba(102, 126, 234, 0.05);
-        border-radius: 15px;
-        border-left: 4px solid #667eea;
-    }
-    
-    .info-item strong {
-        color: #667eea;
-        display: block;
-        margin-bottom: 8px;
-        font-size: 0.9em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
-    .info-item span {
-        color: #333;
-        font-size: 1.2em;
-        font-weight: 600;
-    }
-    
-    .form-group {
-        margin-bottom: 25px;
-    }
-    
-    .form-group label {
-        display: block;
-        margin-bottom: 10px;
-        font-weight: 600;
-        color: #333;
-    }
-    
-    .form-group input {
-        width: 100%;
-        padding: 15px 20px;
-        border: 2px solid rgba(102, 126, 234, 0.2);
-        border-radius: 15px;
-        font-size: 1rem;
-        transition: all 0.3s;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    .form-group input:focus {
-        outline: none;
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-    
-    .btn {
-        padding: 15px 35px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 15px;
-        font-size: 1.05em;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-    
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
-    }
-    
-    @media (max-width: 768px) {
-        .profile-section {
-            padding: 25px;
-        }
-    }
-
-    @media (max-width: 768px) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Smart Dine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/elegant-theme.css">
+    <style>
         body {
-            padding: 10px;
+            background: #ffffff;
         }
         
-        .page-title {
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .message {
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            font-weight: 500;
+            text-align: center;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #4caf50;
+        }
+        
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #f44336;
+        }
+        
+        .profile-section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .profile-section h2 {
+            font-family: 'Playfair Display', serif;
             font-size: 2em;
+            color: #333;
+            margin-bottom: 25px;
         }
         
-        .cart-item, .order-card, .profile-section, .checkout-form, .order-summary {
-            padding: 15px;
-            margin-bottom: 15px;
+        .info-grid {
+            display: grid;
+            gap: 20px;
         }
         
-        .cart-item img {
-            width: 80px;
-            height: 80px;
+        .info-item {
+            padding: 25px;
+            background: #f8f8f8;
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
         }
         
-        .cart-item-info h3 {
-            font-size: 1.1em;
-        }
-        
-        .form-group input, .form-group select, .form-group textarea {
-            font-size: 0.95em;
-            padding: 10px;
-        }
-        
-        .checkout-btn, .back-btn, .view-details-btn {
-            padding: 12px 20px;
-            font-size: 0.95em;
-        }
-        
-        .order-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .order-details, .info-grid {
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        
-        .items-table {
-            font-size: 0.85em;
-        }
-        
-        .items-table th, .items-table td {
-            padding: 8px;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .page-title {
-            font-size: 1.6em;
-        }
-        
-        .cart-item, .order-card, .profile-section {
-            padding: 12px;
-        }
-        
-        .cart-item img {
-            width: 70px;
-            height: 70px;
-        }
-        
-        .cart-item-info h3 {
-            font-size: 1em;
-        }
-        
-        .form-group input, .form-group select {
+        .info-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 10px;
             font-size: 0.9em;
-            padding: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        .checkout-btn, .back-btn {
-            padding: 10px 16px;
-            font-size: 0.9em;
+        .info-item span {
+            color: #333;
+            font-size: 1.3em;
+            font-weight: 600;
         }
-        
-        .items-table {
-            font-size: 0.75em;
-        }
-        
-        .items-table th, .items-table td {
-            padding: 6px;
-        }
-        
-        .order-id {
-            font-size: 1.1em;
-        }
-        
-        .detail-value {
-            font-size: 0.95em;
-        }
-    }
-</style>
+    </style>
+</head>
+<body>
+    <?php include '../../includes/header.php'; ?>
 
-<div class="profile-container">
-    <?php if ($message): ?>
-        <div class="message <?php echo $messageType; ?>">
-            <?php echo $messageType === 'success' ? '✅' : '⚠️'; ?> <?php echo htmlspecialchars($message); ?>
-        </div>
-    <?php endif; ?>
+    <main>
+        <div class="profile-container">
+            <div class="page-header">
+                <div class="page-subtitle">Account Settings</div>
+                <h1 class="page-title">My Profile</h1>
+                <p class="page-description">Manage your account information and preferences</p>
+            </div>
 
-    <div class="profile-section">
-        <h2>Account Information</h2>
-        <div class="info-grid">
-            <div class="info-item">
-                <strong>Username</strong>
-                <span><?php echo htmlspecialchars($user['username']); ?></span>
+            <?php if ($message): ?>
+                <div class="message <?php echo $messageType; ?>">
+                    <?php echo $messageType === 'success' ? '✅' : '⚠️'; ?> <?php echo htmlspecialchars($message); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="profile-section">
+                <h2>Account Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Username</strong>
+                        <span><?php echo htmlspecialchars($user['username']); ?></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Role</strong>
+                        <span><?php echo ucfirst(htmlspecialchars($user['role'])); ?></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Member Since</strong>
+                        <span><?php echo date('F j, Y', strtotime($user['created_at'])); ?></span>
+                    </div>
+                </div>
             </div>
-            <div class="info-item">
-                <strong>Role</strong>
-                <span><?php echo ucfirst(htmlspecialchars($user['role'])); ?></span>
+
+            <div class="profile-section">
+                <h2>Update Email</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                    </div>
+                    <button type="submit" name="update_profile" class="btn btn-primary">💾 Update Email</button>
+                </form>
             </div>
-            <div class="info-item">
-                <strong>Member Since</strong>
-                <span><?php echo date('F j, Y', strtotime($user['created_at'])); ?></span>
+
+            <div class="profile-section">
+                <h2>Change Password</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" name="current_password" class="form-control" placeholder="Enter current password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" name="new_password" class="form-control" placeholder="Enter new password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm new password" required>
+                    </div>
+                    <button type="submit" name="change_password" class="btn btn-primary">🔒 Change Password</button>
+                </form>
             </div>
         </div>
-    </div>
+    </main>
 
-    <div class="profile-section">
-        <h2>Update Email</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
-            </div>
-            <button type="submit" name="update_profile" class="btn">💾 Update Email</button>
-        </form>
-    </div>
-
-    <div class="profile-section">
-        <h2>Change Password</h2>
-        <form method="POST">
-            <div class="form-group">
-                <label>Current Password</label>
-                <input type="password" name="current_password" placeholder="Enter current password" required>
-            </div>
-            <div class="form-group">
-                <label>New Password</label>
-                <input type="password" name="new_password" placeholder="Enter new password" required>
-            </div>
-            <div class="form-group">
-                <label>Confirm New Password</label>
-                <input type="password" name="confirm_password" placeholder="Confirm new password" required>
-            </div>
-            <button type="submit" name="change_password" class="btn">🔒 Change Password</button>
-        </form>
-    </div>
-</div>
-
-<?php include '../../includes/footer.php'; ?>
+    <?php include '../../includes/footer.php'; ?>
+</body>
+</html>

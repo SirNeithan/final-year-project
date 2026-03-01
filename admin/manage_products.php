@@ -8,22 +8,55 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 }
 
 $message = '';
+$messageType = 'success';
 
 // Handle product addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $name = $_POST['name'];
     $price = $_POST['price'];
-    $image = $_POST['image'];
     $category = $_POST['category'];
     $restaurant = $_POST['restaurant'];
     $description = $_POST['description'] ?? '';
     
-    try {
-        $stmt = $conn->prepare("INSERT INTO products (name, price, image, category, restaurant, description) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$name, $price, $image, $category, $restaurant, $description]);
-        $message = 'Product added successfully!';
-    } catch (Exception $e) {
-        $message = 'Error adding product: ' . $e->getMessage();
+    // Handle image upload
+    $imageName = '';
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '../assets/images/food pics/';
+        $fileExtension = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
+        if (in_array($fileExtension, $allowedExtensions)) {
+            // Generate unique filename
+            $imageName = time() . '_' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', $_FILES['image']['name']);
+            $uploadPath = $uploadDir . $imageName;
+            
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
+                // Image uploaded successfully
+            } else {
+                $message = 'Error uploading image file.';
+                $messageType = 'error';
+                $imageName = '';
+            }
+        } else {
+            $message = 'Invalid file type. Only JPG, JPEG, PNG, GIF, and WEBP are allowed.';
+            $messageType = 'error';
+        }
+    } else {
+        $message = 'Please select an image to upload.';
+        $messageType = 'error';
+    }
+    
+    // Only insert if image was uploaded successfully
+    if ($imageName) {
+        try {
+            $stmt = $conn->prepare("INSERT INTO products (name, price, image, category, restaurant, description) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$name, $price, $imageName, $category, $restaurant, $description]);
+            $message = 'Product added successfully!';
+            $messageType = 'success';
+        } catch (Exception $e) {
+            $message = 'Error adding product: ' . $e->getMessage();
+            $messageType = 'error';
+        }
     }
 }
 
@@ -54,7 +87,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Products - Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         * {
@@ -65,18 +98,18 @@ try {
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff;
             min-height: 100vh;
             padding: 20px;
         }
         
         header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 20px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
         }
         
         header h1 {
@@ -115,20 +148,54 @@ try {
         .message {
             padding: 15px 20px;
             margin-bottom: 20px;
-            background: rgba(17, 153, 142, 0.95);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
             border-radius: 15px;
             font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+        }
+        
+        .error-message {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+        
+        input[type="file"] {
+            padding: 10px;
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="file"]:hover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="file"]::file-selector-button:hover {
+            transform: scale(1.05);
         }
         
         .add-form {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
             margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
         }
         
         .add-form h2 {
@@ -138,6 +205,7 @@ try {
             background-clip: text;
             font-size: 1.5em;
             margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
         }
         
         .form-group {
@@ -185,20 +253,20 @@ try {
         }
         
         .admin-container > h2 {
-            color: white;
+            color: #333;
             font-size: 1.8em;
             margin-bottom: 25px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-family: 'Playfair Display', serif;
         }
         
         .products-table {
             width: 100%;
             border-collapse: collapse;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
         }
         
         .products-table th {
@@ -232,15 +300,14 @@ try {
         }
         
         footer {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: #f8f8f8;
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-top: 30px;
             text-align: center;
             color: #333;
             font-weight: 500;
+            border: 1px solid #f0f0f0;
         }
         
         @media (max-width: 768px) {
@@ -406,23 +473,28 @@ try {
     <main>
         <div class="admin-container">
             <?php if ($message): ?>
-                <div class="message"><?php echo htmlspecialchars($message); ?></div>
+                <div class="message <?php echo $messageType === 'error' ? 'error-message' : ''; ?>">
+                    <?php echo htmlspecialchars($message); ?>
+                </div>
             <?php endif; ?>
 
             <div class="add-form">
                 <h2>Add New Product</h2>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Product Name</label>
                         <input type="text" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label>Price (e.g., UGX 200)</label>
+                        <label>Price (e.g., UGX 20,000)</label>
                         <input type="text" name="price" required>
                     </div>
                     <div class="form-group">
-                        <label>Image Filename</label>
-                        <input type="text" name="image" placeholder="example.jpg" required>
+                        <label>Product Image</label>
+                        <input type="file" name="image" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" required>
+                        <small style="color: #666; font-size: 0.85em; display: block; margin-top: 5px;">
+                            Accepted formats: JPG, JPEG, PNG, GIF, WEBP (Max 5MB)
+                        </small>
                     </div>
                     <div class="form-group">
                         <label>Category</label>

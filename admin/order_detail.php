@@ -34,7 +34,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order #<?php echo $orderId; ?> - Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         * {
@@ -45,18 +45,18 @@ try {
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #ffffff;
             min-height: 100vh;
             padding: 20px;
         }
         
         header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 20px 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
         }
         
         header h1 {
@@ -110,12 +110,12 @@ try {
         }
         
         .order-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: white;
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
             margin-bottom: 20px;
+            border: 1px solid #f0f0f0;
         }
         
         .order-header {
@@ -131,6 +131,7 @@ try {
             background-clip: text;
             font-size: 2em;
             margin-bottom: 10px;
+            font-family: 'Playfair Display', serif;
         }
         
         .order-header p {
@@ -164,6 +165,7 @@ try {
             font-size: 1.1em;
             margin-bottom: 12px;
             font-weight: 600;
+            font-family: 'Playfair Display', serif;
         }
         
         .info-section p {
@@ -179,6 +181,7 @@ try {
             background-clip: text;
             font-size: 1.3em;
             margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
         }
         
         .items-table {
@@ -204,15 +207,14 @@ try {
         }
         
         footer {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+            background: #f8f8f8;
             padding: 20px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             margin-top: 30px;
             text-align: center;
             color: #333;
             font-weight: 500;
+            border: 1px solid #f0f0f0;
         }
         
         @media (max-width: 768px) {
@@ -416,7 +418,8 @@ try {
                     </thead>
                     <tbody>
                         <?php foreach ($orderItems as $item): 
-                            $priceNum = floatval(str_replace(['UGX', ' '], '', $item['product_price']));
+                            // Remove currency symbols and commas from price
+                            $priceNum = floatval(str_replace(['UGX', 'KSh', ' ', ','], '', $item['product_price']));
                             $subtotal = $priceNum * $item['quantity'];
                         ?>
                             <tr>

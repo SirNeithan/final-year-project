@@ -33,429 +33,412 @@ if ($restaurant) {
         return $product['restaurant'] === $restaurant;
     });
     $pageTitle = "$restaurant - Smart Dine";
-    $headerTitle = "🍽️ " . htmlspecialchars($restaurant);
+    $headerTitle = "Smart Dine";
 } else {
     $restaurants = array_unique(array_column($products, 'restaurant'));
     $pageTitle = "Smart Dine - Multi-Restaurant Platform";
-    $headerTitle = "🍽️ Smart Dine";
+    $headerTitle = "Smart Dine";
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $pageTitle; ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <?php include 'includes/header.php'; ?>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
+            background: #ffffff;
         }
         
-        header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        header h1 {
-            font-size: 2em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 700;
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .user-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-        
-        .admin-badge {
-            background: #ffd700;
-            color: #333;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
-            margin-left: 8px;
-            font-weight: 700;
-        }
-        
-        .logout-btn {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
-        }
-        
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
-        }
-        
-        nav {
-            width: 100%;
-            margin-top: 15px;
-        }
-        
-        nav ul {
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-        }
-        
-        nav ul li a {
-            color: #667eea;
-            text-decoration: none;
-            padding: 8px 18px;
-            border-radius: 20px;
-            transition: all 0.3s;
-            font-weight: 500;
-            background: rgba(102, 126, 234, 0.1);
-        }
-        
-        nav ul li a:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 30px;
-        }
-        
+        /* Hero Section */
         .hero-section {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 50px;
+            position: relative;
+            height: 85vh;
+            min-height: 600px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), 
+                        url('assets/images/food pics/Beef Steak.jpg') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            color: white;
+            margin-top: -20px;
         }
         
-        .hero-section h2 {
-            font-size: 3em;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 15px;
+        .hero-content {
+            max-width: 800px;
+            padding: 40px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+            font-weight: 300;
+        }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 5em;
             font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
         
-        .hero-section p {
+        .hero-description {
             font-size: 1.3em;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: #f5f5f5;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            padding: 18px 45px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
             color: #333;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* About Section */
+        .about-section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .about-image {
+            position: relative;
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        
+        .about-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .about-content p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #666;
             margin-bottom: 30px;
         }
         
-        .restaurant-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+        /* Restaurants Section */
+        .restaurants-section {
+            background: #f8f8f8;
+            padding: 100px 20px;
         }
         
-        .restaurant {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
+        .section-header {
             text-align: center;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto 60px;
         }
         
-        .restaurant::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .restaurant:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-        }
-        
-        .restaurant-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-        
-        .restaurant h3 {
-            font-size: 1.8em;
-            color: #333;
+        .section-subtitle {
+            font-size: 0.95em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #667eea;
             margin-bottom: 15px;
             font-weight: 600;
         }
         
-        .restaurant p {
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
             color: #333;
-            margin-bottom: 25px;
-            font-size: 1.05em;
+            margin-bottom: 20px;
         }
         
-        .view-menu-btn {
-            display: inline-block;
-            padding: 15px 35px;
+        .section-description {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .restaurant-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+        
+        .restaurant-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s;
+            position: relative;
+        }
+        
+        .restaurant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        
+        .restaurant-image {
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .restaurant-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .restaurant-card:hover .restaurant-image img {
+            transform: scale(1.1);
+        }
+        
+        .restaurant-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            text-decoration: none;
-            border-radius: 30px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.85em;
             font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         
-        .view-menu-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        .restaurant-info {
+            padding: 35px;
+        }
+        
+        .restaurant-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .restaurant-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .restaurant-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: all 0.3s;
+        }
+        
+        .restaurant-link:hover {
+            color: #764ba2;
+            transform: translateX(5px);
+        }
+        
+        /* Featured Products */
+        .featured-section {
+            padding: 100px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
         }
         
-        .product {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
+        .product-card {
+            background: white;
             border-radius: 20px;
             overflow: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s;
         }
         
-        .product:hover {
+        .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
         
-        .product img {
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
             width: 100%;
-            height: 220px;
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
         }
         
         .product-info {
-            padding: 25px;
+            padding: 30px;
         }
         
-        .product h3 {
-            font-size: 1.4em;
-            color: #333;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .product p {
-            
+        .product-name {
+            font-family: 'Playfair Display', serif;
             font-size: 1.5em;
-            font-weight: 700;
-            margin: 15px 0;
+            margin-bottom: 10px;
+            color: #333;
         }
         
-        .product button {
+        .product-restaurant {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .product-price {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .add-to-cart-btn {
             width: 100%;
             padding: 15px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 30px;
-            font-size: 1.05em;
+            border-radius: 50px;
             font-weight: 600;
+            font-size: 1.05em;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
         
-        .product button:hover {
+        .add-to-cart-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
         
-        footer {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            color: #333;
-            text-align: center;
-            padding: 30px;
-            margin-top: 50px;
-            font-weight: 500;
-        }
-        
-        #notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 30px;
-            display: none;
-            z-index: 2000;
-            animation: slideIn 0.3s ease-out;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            font-weight: 600;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-                padding: 15px;
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-title {
+                font-size: 3.5em;
             }
             
-            .user-info {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .hero-section {
-                padding: 25px 15px;
-            }
-            
-            .hero-section h2 {
-                font-size: 1.8em;
+            .about-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
             }
             
             .restaurant-grid {
                 grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 0 10px;
-            }
-            
-            .product-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 0 10px;
-            }
-            
-            .product {
-                padding: 15px;
-            }
-            
-            .product img {
-                height: 180px;
-            }
-            
-            .product h3 {
-                font-size: 1.1em;
-            }
-            
-            .product p {
-                font-size: 1.3em;
-            }
-            
-            .product button {
-                padding: 12px;
-                font-size: 0.95em;
-            }
-            
-            #notification {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                padding: 12px 20px;
-                font-size: 0.9em;
             }
         }
         
-        @media (max-width: 480px) {
-            .hero-section h2 {
-                font-size: 1.5em;
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 70vh;
+                min-height: 500px;
             }
             
-            .hero-section p {
-                font-size: 0.95em;
+            .hero-title {
+                font-size: 2.5em;
             }
             
-            .restaurant {
-                padding: 15px;
-            }
-            
-            .restaurant h3 {
+            .hero-description {
                 font-size: 1.1em;
             }
             
-            .product img {
-                height: 150px;
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .product h3 {
-                font-size: 1em;
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                max-width: 300px;
             }
             
-            .product p {
-                font-size: 1.2em;
+            .section-title {
+                font-size: 2em;
             }
             
-            .product button {
-                padding: 10px;
-                font-size: 0.9em;
+            .about-content h2 {
+                font-size: 2em;
             }
         }
     </style>
@@ -463,93 +446,118 @@ if ($restaurant) {
 <body>
     <div id="notification"></div>
     
-    <header>
-        <div class="header-content">
-            <h1><?php echo $headerTitle; ?></h1>
-            <div class="user-info">
-                <span class="user-badge">
-                    👤 <?php echo htmlspecialchars($_SESSION['username']); ?>
-                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                        <span class="admin-badge">ADMIN</span>
-                    <?php endif; ?>
-                </span>
-                <a href="pages/auth/logout.php" class="logout-btn">🚪 Logout</a>
+    <?php if (!$restaurant): ?>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-subtitle">Welcome to</div>
+                <h1 class="hero-title">Smart Dine</h1>
+                <p class="hero-description">Experience the finest culinary delights from Uganda's best restaurants, delivered right to your doorstep</p>
+                <div class="hero-buttons">
+                    <a href="#restaurants" class="btn-primary">Explore Restaurants</a>
+                    <a href="pages/user/search.php" class="btn-secondary">Browse Menu</a>
+                </div>
             </div>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="home.php">🏠 Home</a></li>
-                <?php if ($restaurant): ?>
-                    <li><a href="pages/categories/appetizers.php?restaurant=<?php echo urlencode($restaurant); ?>">🥗 Appetizers</a></li>
-                    <li><a href="pages/categories/main-courses.php?restaurant=<?php echo urlencode($restaurant); ?>">🍽️ Main Courses</a></li>
-                    <li><a href="pages/categories/desserts.php?restaurant=<?php echo urlencode($restaurant); ?>">🍰 Desserts</a></li>
-                    <li><a href="pages/categories/beverages.php?restaurant=<?php echo urlencode($restaurant); ?>">🥤 Beverages</a></li>
-                <?php endif; ?>
-                <li><a href="pages/user/search.php">🔍 Search</a></li>
-                <li><a href="pages/user/profile.php">👤 Profile</a></li>
-                <li><a href="pages/orders/orders.php">📦 Orders</a></li>
-                <li><a href="pages/user/cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
-                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <li><a href="admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">⚙️ Admin</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <?php if ($restaurant): ?>
-            <div class="hero-section">
-                <h2><?php echo htmlspecialchars($restaurant); ?> Menu</h2>
-                <p>Discover our delicious selection of dishes</p>
+        </section>
+        
+        <!-- About Section -->
+        <section class="about-section">
+            <div class="about-image">
+                <img src="assets/images/food pics/Grilled Lobster.jpg" alt="Delicious Food">
+            </div>
+            <div class="about-content">
+                <h2>Taste the Difference</h2>
+                <p>At Smart Dine, we bring together the best restaurants in Uganda under one platform. From traditional Ugandan cuisine to international flavors, discover a world of taste at your fingertips.</p>
+                <p>Our carefully curated selection of partner restaurants ensures that every meal is a memorable experience. Fresh ingredients, expert chefs, and fast delivery - that's the Smart Dine promise.</p>
+                <a href="pages/user/search.php" class="btn-primary">Order Now</a>
+            </div>
+        </section>
+        
+        <!-- Restaurants Section -->
+        <section class="restaurants-section" id="restaurants">
+            <div class="section-header">
+                <div class="section-subtitle">Our Partners</div>
+                <h2 class="section-title">Featured Restaurants</h2>
+                <p class="section-description">Choose from our selection of premium restaurants, each offering unique flavors and exceptional quality</p>
+            </div>
+            
+            <div class="restaurant-grid">
+                <?php 
+                $restaurantImages = [
+                    'Smart Dine' => 'Cheeseburger.jpg',
+                    'Italian Corner' => 'Antipasto Platter.jpg',
+                    'Asian Fusion' => 'Dumplings.jpg',
+                    'Mexican Grill' => 'Burrito Bowl.jpg',
+                    'Seafood Delight' => 'Grilled Lobster.jpg',
+                    'Fast Food Hub' => 'Big Mac.jpg',
+                    'Dessert Heaven' => 'Cheesecake.jpg',
+                    'Vegan Paradise' => 'Almond Milk Latte.jpg'
+                ];
+                
+                $restaurantDescriptions = [
+                    'Smart Dine' => 'Classic comfort food and international favorites',
+                    'Italian Corner' => 'Authentic Italian cuisine with a modern twist',
+                    'Asian Fusion' => 'Bold Asian flavors from across the continent',
+                    'Mexican Grill' => 'Spicy and flavorful Mexican specialties',
+                    'Seafood Delight' => 'Fresh seafood prepared to perfection',
+                    'Fast Food Hub' => 'Quick bites and satisfying meals',
+                    'Dessert Heaven' => 'Sweet treats and decadent desserts',
+                    'Vegan Paradise' => 'Plant-based delights for conscious eaters'
+                ];
+                
+                foreach ($restaurants as $rest): 
+                    $image = $restaurantImages[$rest] ?? 'Cheeseburger.jpg';
+                    $description = $restaurantDescriptions[$rest] ?? 'Delicious food awaits you';
+                ?>
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <img src="assets/images/food pics/<?php echo $image; ?>" alt="<?php echo htmlspecialchars($rest); ?>">
+                            <div class="restaurant-badge">Popular</div>
+                        </div>
+                        <div class="restaurant-info">
+                            <h3 class="restaurant-name"><?php echo htmlspecialchars($rest); ?></h3>
+                            <p class="restaurant-description"><?php echo $description; ?></p>
+                            <a href="home.php?restaurant=<?php echo urlencode($rest); ?>" class="restaurant-link">
+                                View Menu →
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        
+    <?php else: ?>
+        <!-- Restaurant Menu Page -->
+        <section class="featured-section">
+            <div class="section-header">
+                <div class="section-subtitle"><?php echo htmlspecialchars($restaurant); ?></div>
+                <h2 class="section-title">Our Menu</h2>
+                <p class="section-description">Discover our delicious selection of carefully crafted dishes</p>
             </div>
             
             <div class="product-grid">
                 <?php foreach ($results as $product): ?>
-                    <div class="product">
-                        <img src="assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
-                             alt="<?php echo htmlspecialchars($product['name']); ?>">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
+                                 alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        </div>
                         <div class="product-info">
-                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
-                            <p><?php echo htmlspecialchars($product['price']); ?></p>
-                            <button onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo addslashes($product['name']); ?>', '<?php echo htmlspecialchars($product['price']); ?>', '<?php echo addslashes($product['restaurant']); ?>')">
-                                🛒 Add to Cart
+                            <h3 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <p class="product-restaurant"><?php echo htmlspecialchars($product['restaurant']); ?></p>
+                            <div class="product-price"><?php echo htmlspecialchars($product['price']); ?></div>
+                            <button class="add-to-cart-btn" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo addslashes($product['name']); ?>', '<?php echo htmlspecialchars($product['price']); ?>', '<?php echo addslashes($product['restaurant']); ?>')">
+                                Add to Cart
                             </button>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
-        <?php else: ?>
-            <div class="hero-section">
-                <h2>Choose Your Restaurant</h2>
-                <p>Explore our amazing selection of partner restaurants</p>
-            </div>
-            
-            <div class="restaurant-grid">
-                <?php 
-                $icons = ['🍕', '🍝', '🍜', '🌮', '🦞', '🍔', '🍰', '🥗'];
-                $iconIndex = 0;
-                foreach ($restaurants as $rest): 
-                ?>
-                    <div class="restaurant">
-                        <div class="restaurant-icon"><?php echo $icons[$iconIndex % count($icons)]; ?></div>
-                        <h3><?php echo htmlspecialchars($rest); ?></h3>
-                        <p>Explore delicious dishes from <?php echo htmlspecialchars($rest); ?></p>
-                        <a href="home.php?restaurant=<?php echo urlencode($rest); ?>" class="view-menu-btn">
-                            View Menu →
-                        </a>
-                    </div>
-                <?php 
-                    $iconIndex++;
-                endforeach; 
-                ?>
-            </div>
-        <?php endif; ?>
-    </main>
-
-    <footer>
-        <p>📞 Contact us: 0766191751| Smart Dine - Taste the Difference 🍽️</p>
-    </footer>
-
+        </section>
+    <?php endif; ?>
+    
+    <?php include 'includes/footer.php'; ?>
+    
     <script src="assets/js/script.js"></script>
 </body>
 </html>
