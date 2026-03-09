@@ -543,7 +543,7 @@ try {
     </main>
 
     <footer>
-        <p>Smart Dine Admin Panel | Contact: +123-456-7890</p>
+        <p>Smart Dine Admin Panel | Contact:0766191751</p>
     </footer>
 </body>
 </html>
