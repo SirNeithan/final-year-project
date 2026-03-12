@@ -55,8 +55,8 @@ CREATE TABLE order_items (
     product_name VARCHAR(255) NOT NULL,
     product_price VARCHAR(50) NOT NULL,
     quantity INT DEFAULT 1,
-    restaurant VARCHAR(100) NOT NU
-
+    restaurant VARCHAR(100) NOT NULL
+);
 -- Demo Users (passwords are hashed using password_hash)
 -- User credentials: username/password
 -- demo1/password, demo2/password, demo3/password, demo4/password, admin/admin123
