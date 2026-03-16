@@ -506,8 +506,8 @@ if ($restaurant) {
         <section class="restaurants-section" id="restaurants">
             <div class="section-header">
                 <div class="section-subtitle">Our Partners</div>
-                <h2 class="section-title">Restaurants by Region</h2>
-                <p class="section-description">Explore our vast collection of restaurants, all in one place</p>
+                <h2 class="section-title">Explore Our Vast Collection Of Restaurants</h2>
+                <p class="section-description">Your All In One Food Source</p>
             </div>
 
             <?php foreach ($regionMap as $regionName => $regionRests): ?>

@@ -2,15 +2,27 @@
 session_start();
 $products = json_decode(file_get_contents('../../data/products.json'), true);
 
-$query = isset($_GET['query']) ? strtolower($_GET['query']) : '';
-$category = isset($_GET['category']) ? $_GET['category'] : '';
-$restaurant = isset($_GET['restaurant']) ? $_GET['restaurant'] : '';
+$regionMap = [
+    'Central'  => ['Smart Dine', 'Italian Corner', 'Dessert Heaven'],
+    'Eastern'  => ['Asian Fusion', 'Fast Food Hub'],
+    'Western'  => ['Seafood Delight', 'Vegan Paradise'],
+    'Northern' => ['Mexican Grill'],
+];
 
-$results = array_filter($products, function ($product) use ($query, $category, $restaurant) {
-    $matchesQuery = empty($query) || strpos(strtolower($product['name']), $query) !== false;
-    $matchesCategory = empty($category) || $product['category'] === $category;
+$query      = isset($_GET['query'])      ? strtolower($_GET['query']) : '';
+$category   = isset($_GET['category'])   ? $_GET['category']          : '';
+$region     = isset($_GET['region'])     ? $_GET['region']             : '';
+$restaurant = isset($_GET['restaurant']) ? $_GET['restaurant']         : '';
+
+// If a region is selected, restrict to its restaurants
+$allowedRestaurants = (!empty($region) && isset($regionMap[$region])) ? $regionMap[$region] : [];
+
+$results = array_filter($products, function ($product) use ($query, $category, $restaurant, $allowedRestaurants) {
+    $matchesQuery      = empty($query)      || strpos(strtolower($product['name']), $query) !== false;
+    $matchesCategory   = empty($category)   || $product['category']   === $category;
     $matchesRestaurant = empty($restaurant) || $product['restaurant'] === $restaurant;
-    return $matchesQuery && $matchesCategory && $matchesRestaurant;
+    $matchesRegion     = empty($allowedRestaurants) || in_array($product['restaurant'], $allowedRestaurants);
+    return $matchesQuery && $matchesCategory && $matchesRestaurant && $matchesRegion;
 });
 
 foreach ($results as $index => $product) {
@@ -19,8 +31,8 @@ foreach ($results as $index => $product) {
     }
 }
 
-$pageTitle = "Search - Smart Dine";
-$headerTitle = "Smart Dine";
+$pageTitle = "Search - SmartDine Hub";
+$headerTitle = "SmartDine Hub";
 include '../../includes/header.php';
 ?>
 
@@ -44,10 +56,24 @@ include '../../includes/header.php';
 }
 
 .search-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr auto;
-    gap: 15px;
-    align-items: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.search-row .search-input {
+    flex: 2 1 200px;
+    min-width: 0;
+}
+
+.search-row .search-select {
+    flex: 1 1 130px;
+    min-width: 0;
+}
+
+.search-row .search-btn {
+    flex: 0 0 auto;
 }
 
 .search-input {
@@ -115,9 +141,9 @@ include '../../includes/header.php';
     font-size: 1.3em;
 }
 
-@media (max-width: 968px) {
-    .search-row {
-        grid-template-columns: 1fr;
+@media (max-width: 600px) {
+    .search-row .search-btn {
+        width: 100%;
     }
 }
 </style>
@@ -151,15 +177,33 @@ include '../../includes/header.php';
                         <option value="beverage" <?php echo $category === 'beverage' ? 'selected' : ''; ?>>Beverages</option>
                     </select>
                 </div>
+
+                <div class="form-group" style="margin: 0;">
+                    <select name="region" id="region-select" class="search-select" onchange="filterRestaurantsByRegion()">
+                        <option value="">All Regions</option>
+                        <?php foreach (array_keys($regionMap) as $r): ?>
+                            <option value="<?php echo $r; ?>" <?php echo $region === $r ? 'selected' : ''; ?>>
+                                <?php echo $r; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 
                 <div class="form-group" style="margin: 0;">
-                    <select name="restaurant" class="search-select">
+                    <select name="restaurant" id="restaurant-select" class="search-select">
                         <option value="">All Restaurants</option>
                         <?php
-                        $restaurants = array_unique(array_column($products, 'restaurant'));
-                        foreach ($restaurants as $rest):
+                        $allRestaurants = array_unique(array_column($products, 'restaurant'));
+                        foreach ($allRestaurants as $rest):
+                            // Find which region this restaurant belongs to
+                            $restRegion = '';
+                            foreach ($regionMap as $rName => $rRests) {
+                                if (in_array($rest, $rRests)) { $restRegion = $rName; break; }
+                            }
                         ?>
-                            <option value="<?php echo htmlspecialchars($rest); ?>" <?php echo $restaurant === $rest ? 'selected' : ''; ?>>
+                            <option value="<?php echo htmlspecialchars($rest); ?>"
+                                    data-region="<?php echo $restRegion; ?>"
+                                    <?php echo $restaurant === $rest ? 'selected' : ''; ?>>
                                 <?php echo htmlspecialchars($rest); ?>
                             </option>
                         <?php endforeach; ?>
@@ -169,6 +213,20 @@ include '../../includes/header.php';
                 <button type="submit" class="search-btn">Search</button>
             </div>
         </form>
+
+        <script>
+        function filterRestaurantsByRegion() {
+            const region = document.getElementById('region-select').value;
+            const select = document.getElementById('restaurant-select');
+            select.value = '';
+            Array.from(select.options).forEach(opt => {
+                if (!opt.value) return; // keep "All Restaurants"
+                opt.hidden = region && opt.dataset.region !== region;
+            });
+        }
+        // Run on page load to respect pre-selected region
+        filterRestaurantsByRegion();
+        </script>
     </div>
 
     <?php if ($query || $category || $restaurant): ?>
