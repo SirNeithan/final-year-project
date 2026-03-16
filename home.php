@@ -28,16 +28,45 @@ foreach ($products as $index => $product) {
     }
 }
 
+$regionMap = [
+    'Central'  => ['Smart Dine', 'Italian Corner', 'Dessert Heaven'],
+    'Eastern'  => ['Asian Fusion', 'Fast Food Hub'],
+    'Western'  => ['Seafood Delight', 'Vegan Paradise'],
+    'Northern' => ['Mexican Grill'],
+];
+
+$restaurantImages = [
+    'Smart Dine' => 'Cheeseburger.jpg',
+    'Italian Corner' => 'Antipasto Platter.jpg',
+    'Asian Fusion' => 'Dumplings.jpg',
+    'Mexican Grill' => 'Burrito Bowl.jpg',
+    'Seafood Delight' => 'Grilled Lobster.jpg',
+    'Fast Food Hub' => 'Big Mac.jpg',
+    'Dessert Heaven' => 'Cheesecake.jpg',
+    'Vegan Paradise' => 'Almond Milk Latte.jpg'
+];
+
+$restaurantDescriptions = [
+    'Smart Dine' => 'Classic comfort food and international favorites',
+    'Italian Corner' => 'Authentic Italian cuisine with a modern twist',
+    'Asian Fusion' => 'Bold Asian flavors from across the continent',
+    'Mexican Grill' => 'Spicy and flavorful Mexican specialties',
+    'Seafood Delight' => 'Fresh seafood prepared to perfection',
+    'Fast Food Hub' => 'Quick bites and satisfying meals',
+    'Dessert Heaven' => 'Sweet treats and decadent desserts',
+    'Vegan Paradise' => 'Plant-based delights for conscious eaters'
+];
+
 if ($restaurant) {
     $results = array_filter($products, function ($product) use ($restaurant) {
         return $product['restaurant'] === $restaurant;
     });
-    $pageTitle = "$restaurant - Smart Dine";
-    $headerTitle = "Smart Dine";
+    $pageTitle = "$restaurant - SmartDine Hub";
+    $headerTitle = "SmartDine Hub";
 } else {
     $restaurants = array_unique(array_column($products, 'restaurant'));
-    $pageTitle = "Smart Dine - Multi-Restaurant Platform";
-    $headerTitle = "Smart Dine";
+    $pageTitle = "SmartDine Hub - Multi-Restaurant Platform";
+    $headerTitle = "SmartDine Hub";
 }
 ?>
 <!DOCTYPE html>
@@ -451,10 +480,10 @@ if ($restaurant) {
         <section class="hero-section">
             <div class="hero-content">
                 <div class="hero-subtitle">Welcome to</div>
-                <h1 class="hero-title">Smart Dine</h1>
-                <p class="hero-description">Experience the finest culinary delights from Uganda's best restaurants, delivered right to your doorstep</p>
+                <h1 class="hero-title">SmartDine Hub</h1>
+                <p class="hero-description">Explore our vast collection of restaurants, all in one place</p>
                 <div class="hero-buttons">
-                    <a href="#restaurants" class="btn-primary">Explore Restaurants</a>
+                    <a href="#restaurants" class="btn-primary">Browse Now</a>
                     <a href="pages/user/search.php" class="btn-secondary">Browse Menu</a>
                 </div>
             </div>
@@ -467,8 +496,8 @@ if ($restaurant) {
             </div>
             <div class="about-content">
                 <h2>Taste the Difference</h2>
-                <p>At Smart Dine, we bring together the best restaurants in Uganda under one platform. From traditional Ugandan cuisine to international flavors, discover a world of taste at your fingertips.</p>
-                <p>Our carefully curated selection of partner restaurants ensures that every meal is a memorable experience. Fresh ingredients, expert chefs, and fast delivery - that's the Smart Dine promise.</p>
+                <p>At SmartDine Hub, we bring together the best restaurants across Uganda's regions under one platform. From traditional Ugandan cuisine to international flavors, discover a world of taste at your fingertips.</p>
+                <p>Our carefully curated selection of partner restaurants ensures that every meal is a memorable experience. Fresh ingredients, expert chefs, and fast delivery - that's the SmartDine Hub promise.</p>
                 <a href="pages/user/search.php" class="btn-primary">Order Now</a>
             </div>
         </section>
@@ -477,53 +506,36 @@ if ($restaurant) {
         <section class="restaurants-section" id="restaurants">
             <div class="section-header">
                 <div class="section-subtitle">Our Partners</div>
-                <h2 class="section-title">Featured Restaurants</h2>
-                <p class="section-description">Choose from our selection of premium restaurants, each offering unique flavors and exceptional quality</p>
+                <h2 class="section-title">Restaurants by Region</h2>
+                <p class="section-description">Explore our vast collection of restaurants, all in one place</p>
             </div>
-            
-            <div class="restaurant-grid">
-                <?php 
-                $restaurantImages = [
-                    'Smart Dine' => 'Cheeseburger.jpg',
-                    'Italian Corner' => 'Antipasto Platter.jpg',
-                    'Asian Fusion' => 'Dumplings.jpg',
-                    'Mexican Grill' => 'Burrito Bowl.jpg',
-                    'Seafood Delight' => 'Grilled Lobster.jpg',
-                    'Fast Food Hub' => 'Big Mac.jpg',
-                    'Dessert Heaven' => 'Cheesecake.jpg',
-                    'Vegan Paradise' => 'Almond Milk Latte.jpg'
-                ];
-                
-                $restaurantDescriptions = [
-                    'Smart Dine' => 'Classic comfort food and international favorites',
-                    'Italian Corner' => 'Authentic Italian cuisine with a modern twist',
-                    'Asian Fusion' => 'Bold Asian flavors from across the continent',
-                    'Mexican Grill' => 'Spicy and flavorful Mexican specialties',
-                    'Seafood Delight' => 'Fresh seafood prepared to perfection',
-                    'Fast Food Hub' => 'Quick bites and satisfying meals',
-                    'Dessert Heaven' => 'Sweet treats and decadent desserts',
-                    'Vegan Paradise' => 'Plant-based delights for conscious eaters'
-                ];
-                
-                foreach ($restaurants as $rest): 
+
+            <?php foreach ($regionMap as $regionName => $regionRests): ?>
+            <div style="max-width:1400px; margin:0 auto 60px; padding:0 20px;">
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.8em; color:#333; margin-bottom:30px; padding-left:5px; border-left:4px solid #667eea; padding-left:15px;">
+                    <?php echo htmlspecialchars($regionName); ?> Region
+                </h3>
+                <div class="restaurant-grid">
+                <?php foreach ($regionRests as $rest):
+                    if (!in_array($rest, $restaurants)) continue;
                     $image = $restaurantImages[$rest] ?? 'Cheeseburger.jpg';
                     $description = $restaurantDescriptions[$rest] ?? 'Delicious food awaits you';
                 ?>
                     <div class="restaurant-card">
                         <div class="restaurant-image">
                             <img src="assets/images/food pics/<?php echo $image; ?>" alt="<?php echo htmlspecialchars($rest); ?>">
-                            <div class="restaurant-badge">Popular</div>
+                            <div class="restaurant-badge"><?php echo htmlspecialchars($regionName); ?></div>
                         </div>
                         <div class="restaurant-info">
                             <h3 class="restaurant-name"><?php echo htmlspecialchars($rest); ?></h3>
                             <p class="restaurant-description"><?php echo $description; ?></p>
-                            <a href="home.php?restaurant=<?php echo urlencode($rest); ?>" class="restaurant-link">
-                                View Menu →
-                            </a>
+                            <a href="home.php?restaurant=<?php echo urlencode($rest); ?>" class="restaurant-link">View Menu →</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
+                </div>
             </div>
+            <?php endforeach; ?>
         </section>
         
     <?php else: ?>

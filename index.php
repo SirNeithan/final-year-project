@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Dine - Your Favorite Food Delivered</title>
+  <title>SmartDine Hub - Your Favorite Food Delivered</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
@@ -499,7 +499,7 @@
   <!-- Header -->
   <header class="header">
     <div class="logo">
-      🍽️ <span>Smart</span>Dine
+      🍽️ <span>SmartDine</span> Hub
     </div>
     <nav>
       <ul class="nav-links">
@@ -520,12 +520,11 @@
   <section class="hero" id="home">
     <div class="hero-left">
       <h1>
-        Your Favorite<br>
-        Food Delivered<br>
-        <span class="highlight">Hot & Delicious</span>
+        Welcome to<br>
+        <span class="highlight">SmartDine Hub</span>
       </h1>
       <p>
-        Keep it easy with these simple but delicious recipes. 
+        Your one-stop hub for the best restaurants across Uganda's regions. 
         From make-ahead lunches and midweek meals to fuss-free sides.
       </p>
       <div class="hero-buttons">
@@ -559,9 +558,9 @@
   <!-- Features Section -->
   <section class="features" id="menus">
     <div class="section-header">
-      <h2>Why Choose <span class="highlight">Smart Dine</span></h2>
+      <h2>Why Choose <span class="highlight">SmartDine Hub</span></h2>
       <p>
-        We bring together the best restaurants in Uganda, ensuring every meal 
+        We bring together the best restaurants across Uganda's regions, ensuring every meal 
         is a memorable experience with quality and convenience.
       </p>
     </div>
@@ -607,8 +606,8 @@
 
   <!-- Footer -->
   <footer id="contact">
-    <p>📞 Contact us: 0766191751 | Smart Dine - Your Favorite Food Delivered 🍽️</p>
-    <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.6;">© 2026 Smart Dine. All rights reserved.</p>
+    <p>📞 Contact us: 0766191751 | SmartDine Hub - Your Favorite Food Delivered 🍽️</p>
+    <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.6;">© 2026 SmartDine Hub. All rights reserved.</p>
   </footer>
 
 </body>
