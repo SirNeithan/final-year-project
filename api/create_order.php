@@ -55,8 +55,8 @@ try {
     $stmt = $conn->prepare("
         INSERT INTO orders
             (user_id, total_amount, status, delivery_address, delivery_city,
-             customer_name, customer_email, customer_phone, payment_method, notes)
-        VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, 'pay_on_delivery', ?)
+             customer_name, customer_email, customer_phone, payment_method)
+        VALUES (?, ?, 'pending', ?, ?, ?, ?, ?, 'pay_on_delivery')
     ");
     $stmt->execute([
         $_SESSION['user_id'],
@@ -66,7 +66,6 @@ try {
         $data['name']     ?? '',
         $data['email']    ?? '',
         $data['phone']    ?? '',
-        $data['notes']    ?? '',
     ]);
     $orderId = $conn->lastInsertId();
 
