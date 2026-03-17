@@ -450,8 +450,9 @@ try {
                 <li><a href="manage_orders.php">Manage Orders</a></li>
                 <li><a href="manage_products.php">Manage Products</a></li>
                 <li><a href="manage_users.php">Manage Users</a></li>
+                <li><a href="user_activity.php">User Activity</a></li>
                 <li><a href="../home.php">View Site</a></li>
-                <li><a href="../logout.php">Logout</a></li>
+                <li><a href="../pages/auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -459,9 +460,7 @@ try {
     <main>
         <div class="admin-container">
             <?php if ($message): ?>
-                <div class="message <?php echo strpos($message, 'cannot') !== false ? 'error-message' : ''; ?>">
-                    <?php echo htmlspecialchars($message); ?>
-                </div>
+                <div class="message <?php echo strpos($message, 'cannot') !== false ? 'error-message' : ''; ?>"><?php echo htmlspecialchars($message); ?></div>
             <?php endif; ?>
 
             <div class="stats-grid">

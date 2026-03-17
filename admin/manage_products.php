@@ -10,6 +10,17 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 $message = '';
 $messageType = 'success';
 
+// Sync DB products to JSON file so the frontend stays in sync
+function syncProductsToJson($conn) {
+    try {
+        $stmt = $conn->query("SELECT id, name, price, image, category, restaurant, COALESCE(description,'') as description, COALESCE(in_stock,1) as in_stock FROM products ORDER BY id");
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Cast id to int
+        foreach ($products as &$p) { $p['id'] = (int)$p['id']; $p['in_stock'] = (int)$p['in_stock']; }
+        file_put_contents('../data/products.json', json_encode($products, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    } catch (Exception $e) { /* silently fail if DB not available */ }
+}
+
 // Handle product addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $name = $_POST['name'];
@@ -53,10 +64,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
             $stmt->execute([$name, $price, $imageName, $category, $restaurant, $description]);
             $message = 'Product added successfully!';
             $messageType = 'success';
+            syncProductsToJson($conn);
         } catch (Exception $e) {
             $message = 'Error adding product: ' . $e->getMessage();
             $messageType = 'error';
         }
+    }
+}
+
+// Handle stock toggle
+if (isset($_GET['toggle_stock'])) {
+    $productId = intval($_GET['toggle_stock']);
+    try {
+        $stmt = $conn->prepare("UPDATE products SET in_stock = NOT in_stock WHERE id = ?");
+        $stmt->execute([$productId]);
+        $message = 'Stock status updated!';
+        syncProductsToJson($conn);
+    } catch (Exception $e) {
+        $message = 'Error: ' . $e->getMessage();
     }
 }
 
@@ -67,6 +92,7 @@ if (isset($_GET['delete'])) {
         $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
         $stmt->execute([$productId]);
         $message = 'Product deleted successfully!';
+        syncProductsToJson($conn);
     } catch (Exception $e) {
         $message = 'Error deleting product: ' . $e->getMessage();
     }
@@ -464,8 +490,9 @@ try {
                 <li><a href="manage_orders.php">Manage Orders</a></li>
                 <li><a href="manage_products.php">Manage Products</a></li>
                 <li><a href="manage_users.php">Manage Users</a></li>
+                <li><a href="user_activity.php">User Activity</a></li>
                 <li><a href="../home.php">View Site</a></li>
-                <li><a href="../logout.php">Logout</a></li>
+                <li><a href="../pages/auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -526,7 +553,7 @@ try {
                         <th>Price</th>
                         <th>Category</th>
                         <th>Restaurant</th>
-                        <th>Image</th>
+                        <th>Stock</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -538,7 +565,14 @@ try {
                             <td><?php echo htmlspecialchars($product['price']); ?></td>
                             <td><?php echo htmlspecialchars($product['category']); ?></td>
                             <td><?php echo htmlspecialchars($product['restaurant']); ?></td>
-                            <td><?php echo htmlspecialchars($product['image']); ?></td>
+                            <td>
+                                <?php $inStock = isset($product['in_stock']) ? $product['in_stock'] : 1; ?>
+                                <?php if ($inStock): ?>
+                                    <a href="?toggle_stock=<?php echo $product['id']; ?>" style="color:#11998e;font-weight:600;text-decoration:none;">✅ In Stock</a>
+                                <?php else: ?>
+                                    <a href="?toggle_stock=<?php echo $product['id']; ?>" style="color:#eb3349;font-weight:600;text-decoration:none;">❌ Out of Stock</a>
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <a href="?delete=<?php echo $product['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this product?')">Delete</a>
                             </td>

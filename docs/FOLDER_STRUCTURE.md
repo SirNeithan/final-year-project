@@ -15,7 +15,7 @@ smart-dine/
 │   └── order_detail.php       # Order details view
 │
 ├── api/                        # API endpoints
-│   ├── add_to_cart.php        # Add items to cart
+│   ├── .php        # Add items to cart
 │   ├── get_cart_count.php     # Get cart item count
 │   ├── remove_from_cart.php   # Remove items from cart
 │   └── update_cart_quantity.php # Update cart quantities

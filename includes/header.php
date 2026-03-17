@@ -13,14 +13,39 @@
  * Usage: include 'includes/header.php';
  */
 
-// Determine the base path for navigation links
-// This ensures links work correctly regardless of the current page's directory depth
-if (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) {
-    // If we're in a subdirectory under /pages/, go up two levels
+// Determine the base path for navigation links based on directory depth
+$selfPath = $_SERVER['PHP_SELF'];
+if (preg_match('#/pages/[^/]+/[^/]+$#', $selfPath)) {
     $basePath = '../../';
+} elseif (preg_match('#/pages/[^/]+$#', $selfPath)) {
+    $basePath = '../';
 } else {
-    // If we're in the root directory, no need to go up
     $basePath = '';
+}
+
+// Absolute web root for AJAX — works in any subfolder (e.g. /final-year-project/)
+// Start from the current directory path so root-level pages do not keep the script filename.
+$currentDir = str_replace('\\', '/', dirname($_SERVER['PHP_SELF']));
+
+if ($currentDir === '/' || $currentDir === '.') {
+    $currentDir = '';
+}
+
+// Strip nested application folders back to the project root.
+$projectRoot = preg_replace('#/(pages|api|admin|includes|assets)(/.*)?$#', '', $currentDir);
+$webRoot = ($projectRoot === '' ? '/' : rtrim($projectRoot, '/') . '/');
+
+// Track user activity (silently — never breaks the page)
+if (isset($_SESSION['user_id']) && isset($conn)) {
+    try {
+        $page = substr($_SERVER['PHP_SELF'], 0, 191);
+        $ip   = $_SERVER['REMOTE_ADDR'] ?? null;
+        $conn->prepare("
+            INSERT INTO user_activity (user_id, page, ip_address, last_seen)
+            VALUES (?, ?, ?, NOW())
+            ON DUPLICATE KEY UPDATE last_seen = NOW(), ip_address = VALUES(ip_address)
+        ")->execute([$_SESSION['user_id'], $page, $ip]);
+    } catch (Exception $e) { /* table may not exist yet — ignore */ }
 }
 ?>
 <!DOCTYPE html>
@@ -359,7 +384,7 @@ if (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) {
             <a href="<?php echo $basePath; ?>home.php" class="logo">
                 <div class="logo-icon">🍽️</div>
                 <div class="logo-text">
-                    <span class="brand-name">Smart Dine</span>
+                    <span class="brand-name">SmartDine Hub</span>
                     <span class="brand-tagline">Delicious Delivered</span>
                 </div>
             </a>
@@ -395,6 +420,7 @@ if (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) {
                 
                 <!-- User-specific links -->
                 <li><a href="<?php echo $basePath; ?>pages/user/search.php">🔍 Search</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/about.php">ℹ️ About</a></li>
                 <li><a href="<?php echo $basePath; ?>pages/user/profile.php">👤 Profile</a></li>
                 <li><a href="<?php echo $basePath; ?>pages/orders/orders.php">📦 Orders</a></li>
                 
@@ -411,3 +437,7 @@ if (strpos($_SERVER['PHP_SELF'], '/pages/') !== false) {
     
     <!-- Main content area (closed in footer.php) -->
     <main>
+    <script>
+        window.BASE_PATH = '<?php echo $webRoot; ?>';
+        console.log('[SmartDine] BASE_PATH =', window.BASE_PATH);
+    </script>

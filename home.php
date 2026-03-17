@@ -69,14 +69,7 @@ if ($restaurant) {
     $headerTitle = "SmartDine Hub";
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $pageTitle; ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <?php include 'includes/header.php'; ?>
+<?php include 'includes/header.php'; ?>
     <style>
         body {
             background: #ffffff;
@@ -379,6 +372,25 @@ if ($restaurant) {
         .product-card:hover .product-image img {
             transform: scale(1.1);
         }
+
+        .out-of-stock-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .out-of-stock-badge {
+            background: #eb3349;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95em;
+            letter-spacing: 1px;
+        }
         
         .product-info {
             padding: 30px;
@@ -529,7 +541,7 @@ if ($restaurant) {
                         <div class="restaurant-info">
                             <h3 class="restaurant-name"><?php echo htmlspecialchars($rest); ?></h3>
                             <p class="restaurant-description"><?php echo $description; ?></p>
-                            <a href="home.php?restaurant=<?php echo urlencode($rest); ?>" class="restaurant-link">View Menu →</a>
+                            <a href="pages/restaurant.php?name=<?php echo urlencode($rest); ?>" class="restaurant-link">View Menu →</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -549,18 +561,36 @@ if ($restaurant) {
             
             <div class="product-grid">
                 <?php foreach ($results as $product): ?>
+                    <?php $inStock = isset($product['in_stock']) ? (int)$product['in_stock'] : 1; ?>
                     <div class="product-card">
-                        <div class="product-image">
+                        <div class="product-image" style="position:relative;">
                             <img src="assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
                                  alt="<?php echo htmlspecialchars($product['name']); ?>">
+                            <?php if (!$inStock): ?>
+                            <div class="out-of-stock-overlay"><span class="out-of-stock-badge">Out of Stock</span></div>
+                            <?php endif; ?>
                         </div>
                         <div class="product-info">
                             <h3 class="product-name"><?php echo htmlspecialchars($product['name']); ?></h3>
                             <p class="product-restaurant"><?php echo htmlspecialchars($product['restaurant']); ?></p>
+                            <?php if (!empty($product['description'])): ?>
+                            <p style="color:#888; font-size:0.88em; line-height:1.5; margin-bottom:12px;"><?php echo htmlspecialchars($product['description']); ?></p>
+                            <?php endif; ?>
                             <div class="product-price"><?php echo htmlspecialchars($product['price']); ?></div>
-                            <button class="add-to-cart-btn" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo addslashes($product['name']); ?>', '<?php echo htmlspecialchars($product['price']); ?>', '<?php echo addslashes($product['restaurant']); ?>')">
+                            <?php if ($inStock): ?>
+                            <button
+                                class="add-to-cart-btn"
+                                type="button"
+                                data-add-to-cart
+                                data-product-id="<?php echo (int)$product['id']; ?>"
+                                data-product-name="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-product-price="<?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-restaurant="<?php echo htmlspecialchars($product['restaurant'], ENT_QUOTES, 'UTF-8'); ?>">
                                 Add to Cart
                             </button>
+                            <?php else: ?>
+                            <button class="add-to-cart-btn" disabled style="opacity:0.5;cursor:not-allowed;">Out of Stock</button>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -569,7 +599,3 @@ if ($restaurant) {
     <?php endif; ?>
     
     <?php include 'includes/footer.php'; ?>
-    
-    <script src="assets/js/script.js"></script>
-</body>
-</html>

@@ -1,10 +1,10 @@
 <?php
 
-$host = 'localhost'; // Database host
-$dbname = 'smartdine'; // Database name
-$username = 'root'; // Database username
-$password = ''; // Database password
-$port = 3306; // Database port
+$host =getenv('DB_HOST') ?: 'localhost'; // Database host
+$dbname = getenv('DB_NAME') ?:'smartdine'; // Database name
+$username =getenv('DB_USER') ?: 'root'; // Database username
+$password = getenv('DB_PASSWORD') ?: ''; // Database password
+$port = getenv('DB_PORT') ?: 3306; // Database port
 
 
 try {

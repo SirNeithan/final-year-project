@@ -195,6 +195,7 @@ try {
                         </div>
                         
                         <a href="order_details.php?id=<?php echo $order['id']; ?>" class="btn btn-primary">View Details</a>
+                        <a href="order_details.php?id=<?php echo $order['id']; ?>&reorder=1" class="btn btn-secondary" style="margin-left:10px;" onclick="return confirm('Add all items from this order to your cart?')">🔄 Reorder</a>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>

@@ -3,7 +3,7 @@
     
     <!-- Footer Section -->
     <footer>
-        <p>📞 Contact us: 0766191751| Smart Dine - Taste the Difference 🍽️</p>
+        <p>📞 Contact us: 0766191751 | SmartDine Hub - Taste the Difference 🍽️ | <a href="<?php echo $basePath; ?>pages/terms.php" style="color:inherit;text-decoration:underline;">Terms &amp; Privacy</a></p>
     </footer>
     
     <!-- Include main JavaScript file -->

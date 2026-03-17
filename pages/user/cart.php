@@ -7,17 +7,14 @@ $total = 0;
 
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
     $allProducts = json_decode(file_get_contents('../../data/products.json'), true);
-    
     foreach ($allProducts as $index => $product) {
-        if (!isset($product['id'])) {
-            $allProducts[$index]['id'] = $index + 1;
-        }
+        if (!isset($product['id'])) $allProducts[$index]['id'] = $index + 1;
     }
-    
-    $cartItems = [];
+
     foreach ($_SESSION['cart'] as $cartItem) {
         foreach ($allProducts as $product) {
             if ($product['id'] == $cartItem['id'] && $product['restaurant'] == $cartItem['restaurant']) {
+                $product['quantity'] = $cartItem['quantity'] ?? 1;
                 $cartItems[] = $product;
                 break;
             }
@@ -27,8 +24,7 @@ if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
 
 foreach ($cartItems as $item) {
     $priceStr = str_replace(['UGX', 'KSh', ' ', ','], '', $item['price']);
-    $price = floatval($priceStr);
-    $total += $price;
+    $total += floatval($priceStr) * ($item['quantity'] ?? 1);
 }
 
 $pageTitle = "Shopping Cart - Smart Dine";
@@ -212,7 +208,11 @@ include '../../includes/header.php';
     <?php else: ?>
         <div class="cart-grid">
             <div class="cart-items">
-                <?php foreach ($cartItems as $item): ?>
+                <?php foreach ($cartItems as $item): 
+                    $qty = $item['quantity'] ?? 1;
+                    $unitPrice = floatval(str_replace(['UGX', 'KSh', ' ', ','], '', $item['price']));
+                    $lineTotal = $unitPrice * $qty;
+                ?>
                     <div class="cart-item">
                         <div class="cart-item-image">
                             <img src="../../assets/images/food pics/<?php echo htmlspecialchars($item['image']); ?>" 
@@ -221,11 +221,21 @@ include '../../includes/header.php';
                         <div class="cart-item-details">
                             <div>
                                 <h3 class="cart-item-name"><?php echo htmlspecialchars($item['name']); ?></h3>
-                                <p class="cart-item-restaurant">
-                                    from <?php echo htmlspecialchars($item['restaurant']); ?>
-                                </p>
+                                <p class="cart-item-restaurant">from <?php echo htmlspecialchars($item['restaurant']); ?></p>
+                                <?php if (!empty($item['description'])): ?>
+                                <p style="color:#aaa; font-size:0.88em; margin-top:4px;"><?php echo htmlspecialchars($item['description']); ?></p>
+                                <?php endif; ?>
                             </div>
-                            <div class="cart-item-price"><?php echo htmlspecialchars($item['price']); ?></div>
+                            <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:15px;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <button onclick="changeQty(<?php echo $item['id']; ?>, '<?php echo addslashes($item['restaurant']); ?>', <?php echo $qty - 1; ?>)" 
+                                            style="width:32px;height:32px;border-radius:50%;border:2px solid #667eea;background:white;color:#667eea;font-size:1.2em;cursor:pointer;font-weight:700;">−</button>
+                                    <span style="font-weight:700;font-size:1.1em;min-width:20px;text-align:center;"><?php echo $qty; ?></span>
+                                    <button onclick="changeQty(<?php echo $item['id']; ?>, '<?php echo addslashes($item['restaurant']); ?>', <?php echo $qty + 1; ?>)"
+                                            style="width:32px;height:32px;border-radius:50%;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-size:1.2em;cursor:pointer;font-weight:700;">+</button>
+                                </div>
+                                <div class="cart-item-price">UGX <?php echo number_format($lineTotal, 0); ?></div>
+                            </div>
                         </div>
                         <button class="cart-item-remove" 
                                 onclick="removeFromCart(<?php echo $item['id']; ?>, '<?php echo addslashes($item['restaurant']); ?>')">
@@ -283,5 +293,22 @@ function removeFromCart(productId, restaurant) {
     };
 
     xhr.send(`product_id=${productId}&restaurant=${encodeURIComponent(restaurant)}`);
+}
+
+function changeQty(productId, restaurant, newQty) {
+    if (newQty < 1) {
+        removeFromCart(productId, restaurant);
+        return;
+    }
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "../../api/update_cart_quantity.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            if (response.success) location.reload();
+        }
+    };
+    xhr.send(`product_id=${productId}&restaurant=${encodeURIComponent(restaurant)}&quantity=${newQty}`);
 }
 </script>

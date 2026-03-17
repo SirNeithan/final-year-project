@@ -69,6 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Force product listings into a 3-column grid layout
     applyThreeColumnGrid();
+
+    // Bind add-to-cart buttons rendered with data attributes.
+    bindAddToCartButtons();
 });
 
 // ============================================================================
@@ -147,32 +150,34 @@ function applyMissingImageFallbacks() {
  * @param {string} restaurant - The restaurant name (defaults to 'Smart Dine')
  */
 function addToCart(productId, productName, productPrice, restaurant = 'Smart Dine') {
-    // Create AJAX request to add product to cart
+    const base = window.BASE_PATH || '/';
+    const url = base + 'api/add_to_cart.php';
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "api/add_to_cart.php", true);
+    xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    // Handle response from server
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            try {
-                const response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    // Show success message
-                    alert(`${productName} added to cart!`);
-                    // Update cart count badge
-                    updateCartCount();
-                } else {
-                    // Show error message
-                    alert(response.message || "Failed to add product to cart.");
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        showNotification(productName + ' added to cart!');
+                        updateCartCount();
+                    } else {
+                        showNotification(response.message || "Already in cart.");
+                    }
+                } catch (e) {
+                    console.error("Cart parse error:", e, xhr.responseText);
+                    alert("Cart error — check console. URL tried: " + url);
                 }
-            } catch (e) {
-                console.error("Error parsing JSON:", e);
+            } else {
+                console.error("Cart HTTP error:", xhr.status, url);
+                alert("Cart request failed (HTTP " + xhr.status + "). URL: " + url);
             }
         }
     };
 
-    // Send product data to server
     xhr.send('product_id=' + productId + '&restaurant=' + encodeURIComponent(restaurant));
 }
 
@@ -181,11 +186,9 @@ function addToCart(productId, productName, productPrice, restaurant = 'Smart Din
  * This function is called after adding/removing items from cart
  */
 function updateCartCount() {
-    // Create AJAX request to get current cart count
+    const base = window.BASE_PATH || '/';
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "api/get_cart_count.php", true);
-
-    // Handle response from server
+    xhr.open("GET", base + "api/get_cart_count.php", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             const response = JSON.parse(xhr.responseText);
@@ -198,8 +201,32 @@ function updateCartCount() {
             }
         }
     };
-
     xhr.send();
+}
+
+/**
+ * Bind click handling for add-to-cart buttons.
+ * Using data attributes avoids fragile inline JavaScript in HTML attributes.
+ */
+function bindAddToCartButtons() {
+    document.addEventListener("click", function (event) {
+        const button = event.target.closest("[data-add-to-cart]");
+        if (!button) return;
+
+        event.preventDefault();
+
+        const productId = parseInt(button.dataset.productId || "0", 10);
+        const productName = button.dataset.productName || "Item";
+        const productPrice = button.dataset.productPrice || "";
+        const restaurant = button.dataset.restaurant || "Smart Dine";
+
+        if (!productId) {
+            console.error("Add to cart aborted: missing product id", button.dataset);
+            return;
+        }
+
+        addToCart(productId, productName, productPrice, restaurant);
+    });
 }
 
 /**
@@ -209,26 +236,17 @@ function updateCartCount() {
  * @param {string} restaurant - The restaurant name
  */
 function removeFromCart(productId, restaurant) {
-    // Create AJAX request to remove product from cart
+    const base = window.BASE_PATH || '/';
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "api/remove_from_cart.php", true);
+    xhr.open("POST", base + 'api/remove_from_cart.php', true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    // Handle response from server
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             const response = JSON.parse(xhr.responseText);
-            if (response.success) {
-                alert("Product removed from cart.");
-                // Refresh the page to update the cart display
-                location.reload();
-            } else {
-                alert("Failed to remove product from cart.");
-            }
+            if (response.success) location.reload();
+            else alert("Failed to remove product from cart.");
         }
     };
-
-    // Send product ID and restaurant to server
     xhr.send('product_id=' + productId + '&restaurant=' + encodeURIComponent(restaurant));
 }
 

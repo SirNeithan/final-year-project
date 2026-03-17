@@ -18,6 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
+        // Log this login
+        try {
+            $ip = $_SERVER['REMOTE_ADDR'] ?? null;
+            $conn->prepare("INSERT INTO user_logins (user_id, ip_address) VALUES (?, ?)")
+                 ->execute([$user['id'], $ip]);
+        } catch (Exception $e) { /* ignore if table not yet created */ }
         header('Location: ../../home.php', true, 302);
         exit();
       } else {
@@ -418,6 +424,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
 
           <button class="login-btn" type="submit">Login</button>
         </form>
+
+        <div style="text-align:right; margin-top:12px;">
+          <a href="forgot_password.php" style="color:#667eea; font-size:0.9rem; text-decoration:none; font-weight:500;">Forgot password?</a>
+        </div>
 
         <div class="divider">
           <span>or</span>

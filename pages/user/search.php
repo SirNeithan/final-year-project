@@ -257,11 +257,17 @@ include '../../includes/header.php';
     <?php else: ?>
         <div class="product-grid">
             <?php foreach ($results as $product): ?>
+                <?php $inStock = isset($product['in_stock']) ? (int)$product['in_stock'] : 1; ?>
                 <div class="product-card">
-                    <div class="product-image">
+                    <div class="product-image" style="position:relative;">
                         <img src="../../assets/images/food pics/<?php echo htmlspecialchars($product['image']); ?>" 
                              alt="<?php echo htmlspecialchars($product['name']); ?>">
                         <div class="product-badge"><?php echo htmlspecialchars($product['restaurant']); ?></div>
+                        <?php if (!$inStock): ?>
+                        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;">
+                            <span style="background:#eb3349;color:white;padding:8px 20px;border-radius:20px;font-weight:700;font-size:0.9em;letter-spacing:1px;">Out of Stock</span>
+                        </div>
+                        <?php endif; ?>
                     </div>
                     <div class="product-info">
                         <div class="product-category"><?php echo ucfirst(str_replace('-', ' ', $product['category'])); ?></div>
@@ -269,11 +275,23 @@ include '../../includes/header.php';
                         <p class="product-restaurant">
                             <span style="color: #999;">from</span> <?php echo htmlspecialchars($product['restaurant']); ?>
                         </p>
+                        <?php if (!empty($product['description'])): ?>
+                        <p style="color:#888; font-size:0.85em; line-height:1.5; margin-bottom:10px;"><?php echo htmlspecialchars($product['description']); ?></p>
+                        <?php endif; ?>
                         <div class="product-price"><?php echo htmlspecialchars($product['price']); ?></div>
-                        <button class="btn btn-primary btn-full" 
-                                onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo addslashes($product['name']); ?>', '<?php echo htmlspecialchars($product['price']); ?>', '<?php echo addslashes($product['restaurant']); ?>')">
+                        <?php if ($inStock): ?>
+                                <button class="btn btn-primary btn-full"
+                                type="button"
+                                data-add-to-cart
+                                data-product-id="<?php echo (int)$product['id']; ?>"
+                                data-product-name="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-product-price="<?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-restaurant="<?php echo htmlspecialchars($product['restaurant'], ENT_QUOTES, 'UTF-8'); ?>">
                             Add to Cart
                         </button>
+                        <?php else: ?>
+                        <button class="btn btn-primary btn-full" disabled style="opacity:0.5;cursor:not-allowed;">Out of Stock</button>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>

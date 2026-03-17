@@ -30,9 +30,30 @@ try {
         LIMIT 10
     ");
     $recentOrders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Orders by status for pie chart
+    $stmt = $conn->query("SELECT status, COUNT(*) as count FROM orders GROUP BY status");
+    $statusRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $statusLabels = array_column($statusRows, 'status');
+    $statusCounts = array_column($statusRows, 'count');
+
+    // Revenue by month (last 6 months) for bar chart
+    $stmt = $conn->query("
+        SELECT DATE_FORMAT(created_at, '%b %Y') as month, SUM(total_amount) as revenue
+        FROM orders WHERE status = 'completed'
+        AND created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
+        GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+        ORDER BY MIN(created_at)
+    ");
+    $revenueRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $revenueLabels = array_column($revenueRows, 'month');
+    $revenueData   = array_column($revenueRows, 'revenue');
 } catch (Exception $e) {
     die('Error fetching statistics: ' . $e->getMessage());
 }
+// Defaults if no data
+if (empty($statusLabels))  { $statusLabels = ['No Data']; $statusCounts = [1]; }
+if (empty($revenueLabels)) { $revenueLabels = ['No Data']; $revenueData = [0]; }
 ?>
 
 <!DOCTYPE html>
@@ -40,9 +61,10 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Smart Dine</title>
+    <title>Admin Dashboard - SmartDine Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -395,8 +417,9 @@ try {
                 <li><a href="manage_orders.php">Manage Orders</a></li>
                 <li><a href="manage_products.php">Manage Products</a></li>
                 <li><a href="manage_users.php">Manage Users</a></li>
+                <li><a href="user_activity.php">User Activity</a></li>
                 <li><a href="../home.php">View Site</a></li>
-                <li><a href="../logout.php">Logout</a></li>
+                <li><a href="../pages/auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -421,6 +444,18 @@ try {
                 <div class="stat-card">
                     <div class="stat-label">Total Revenue</div>
                     <div class="stat-value">UGX <?php echo number_format($totalRevenue, 0); ?></div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:30px;">
+                <div style="background:white;border-radius:20px;padding:30px;box-shadow:0 5px 25px rgba(0,0,0,0.08);border:1px solid #f0f0f0;">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.3em;margin-bottom:20px;color:#333;">Revenue (Last 6 Months)</h3>
+                    <canvas id="revenueChart" height="200"></canvas>
+                </div>
+                <div style="background:white;border-radius:20px;padding:30px;box-shadow:0 5px 25px rgba(0,0,0,0.08);border:1px solid #f0f0f0;">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.3em;margin-bottom:20px;color:#333;">Orders by Status</h3>
+                    <canvas id="statusChart" height="200"></canvas>
                 </div>
             </div>
 
@@ -461,7 +496,47 @@ try {
     </main>
 
     <footer>
-        <p>Smart Dine Admin Panel | Contact:0766191751</p>
+        <p>SmartDine Hub Admin Panel</p>
     </footer>
+
+    <script>
+    const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+    new Chart(revenueCtx, {
+        type: 'bar',
+        data: {
+            labels: <?php echo json_encode($revenueLabels); ?>,
+            datasets: [{
+                label: 'Revenue (UGX)',
+                data: <?php echo json_encode(array_map('floatval', $revenueData)); ?>,
+                backgroundColor: 'rgba(102,126,234,0.7)',
+                borderColor: '#667eea',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { callback: v => 'UGX ' + v.toLocaleString() } } }
+        }
+    });
+
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    new Chart(statusCtx, {
+        type: 'doughnut',
+        data: {
+            labels: <?php echo json_encode($statusLabels); ?>,
+            datasets: [{
+                data: <?php echo json_encode(array_map('intval', $statusCounts)); ?>,
+                backgroundColor: ['#ffd89b','#667eea','#11998e','#eb3349','#764ba2'],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+    </script>
 </body>
 </html>

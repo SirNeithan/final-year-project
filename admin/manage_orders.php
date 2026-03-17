@@ -360,8 +360,9 @@ try {
                 <li><a href="manage_orders.php">Manage Orders</a></li>
                 <li><a href="manage_products.php">Manage Products</a></li>
                 <li><a href="manage_users.php">Manage Users</a></li>
+                <li><a href="user_activity.php">User Activity</a></li>
                 <li><a href="../home.php">View Site</a></li>
-                <li><a href="../logout.php">Logout</a></li>
+                <li><a href="../pages/auth/logout.php">Logout</a></li>
             </ul>
         </nav>
     </header>
@@ -398,6 +399,7 @@ try {
                                     <select name="status" class="status-select">
                                         <option value="pending" <?php echo $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
                                         <option value="processing" <?php echo $order['status'] === 'processing' ? 'selected' : ''; ?>>Processing</option>
+                                        <option value="out_for_delivery" <?php echo $order['status'] === 'out_for_delivery' ? 'selected' : ''; ?>>Out for Delivery</option>
                                         <option value="completed" <?php echo $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
                                         <option value="cancelled" <?php echo $order['status'] === 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
                                     </select>

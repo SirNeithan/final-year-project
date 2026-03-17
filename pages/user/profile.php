@@ -13,16 +13,36 @@ $messageType = 'success';
 
 // Handle profile update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
-    $email = trim($_POST['email']);
-    
+    $email    = trim($_POST['email']);
+    $username = trim($_POST['username']);
+    $phone    = trim($_POST['phone'] ?? '');
+
     try {
-        $stmt = $conn->prepare("UPDATE users SET email = ? WHERE id = ?");
-        $stmt->execute([$email, $userId]);
-        $message = 'Profile updated successfully!';
-        $messageType = 'success';
+        // Check username not taken by someone else
+        $check = $conn->prepare("SELECT id FROM users WHERE username = ? AND id != ?");
+        $check->execute([$username, $userId]);
+        if ($check->fetch()) {
+            $message = 'That username is already taken.';
+            $messageType = 'error';
+        } else {
+            $stmt = $conn->prepare("UPDATE users SET email = ?, username = ?, phone = ? WHERE id = ?");
+            $stmt->execute([$email, $username, $phone, $userId]);
+            $_SESSION['username'] = $username;
+            $message = 'Profile updated successfully!';
+            $messageType = 'success';
+        }
     } catch (Exception $e) {
-        $message = 'Error updating profile: ' . $e->getMessage();
-        $messageType = 'error';
+        // phone column may not exist yet — try without it
+        try {
+            $stmt = $conn->prepare("UPDATE users SET email = ?, username = ? WHERE id = ?");
+            $stmt->execute([$email, $username, $userId]);
+            $_SESSION['username'] = $username;
+            $message = 'Profile updated (phone field not available in DB).';
+            $messageType = 'success';
+        } catch (Exception $e2) {
+            $message = 'Error updating profile: ' . $e2->getMessage();
+            $messageType = 'error';
+        }
     }
 }
 
@@ -63,6 +83,15 @@ try {
     $stmt = $conn->prepare("SELECT username, email, role, created_at FROM users WHERE id = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Try to get phone too
+    try {
+        $stmt2 = $conn->prepare("SELECT phone FROM users WHERE id = ?");
+        $stmt2->execute([$userId]);
+        $extra = $stmt2->fetch(PDO::FETCH_ASSOC);
+        $user['phone'] = $extra['phone'] ?? '';
+    } catch (Exception $e) {
+        $user['phone'] = '';
+    }
 } catch (Exception $e) {
     die('Error fetching user data: ' . $e->getMessage());
 }
@@ -200,13 +229,21 @@ try {
             </div>
 
             <div class="profile-section">
-                <h2>Update Email</h2>
+                <h2>Update Profile</h2>
                 <form method="POST">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" class="form-control" value="<?php echo htmlspecialchars($user['username']); ?>" required>
+                    </div>
                     <div class="form-group">
                         <label>Email Address</label>
                         <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($user['email']); ?>" required>
                     </div>
-                    <button type="submit" name="update_profile" class="btn btn-primary">💾 Update Email</button>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" class="form-control" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="e.g. 0700123456">
+                    </div>
+                    <button type="submit" name="update_profile" class="btn btn-primary">💾 Save Changes</button>
                 </form>
             </div>
 

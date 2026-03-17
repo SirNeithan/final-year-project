@@ -28,6 +28,24 @@ try {
 } catch (Exception $e) {
     die('Error fetching order details: ' . $e->getMessage());
 }
+
+// Handle reorder
+if (isset($_GET['reorder']) && $_GET['reorder'] == 1) {
+    if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
+    foreach ($orderItems as $item) {
+        $alreadyIn = false;
+        foreach ($_SESSION['cart'] as $c) {
+            if ($c['id'] == $item['product_id'] && $c['restaurant'] == $item['restaurant']) {
+                $alreadyIn = true; break;
+            }
+        }
+        if (!$alreadyIn) {
+            $_SESSION['cart'][] = ['id' => $item['product_id'], 'restaurant' => $item['restaurant'], 'quantity' => $item['quantity']];
+        }
+    }
+    header('Location: ../../pages/user/cart.php');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -217,6 +235,42 @@ try {
                     <p style="color: #999; font-size: 1.05em;">
                         Placed on <?php echo date('F j, Y \a\t g:i A', strtotime($order['created_at'])); ?>
                     </p>
+
+                    <!-- Order status timeline -->
+                    <?php
+                    $steps = ['pending' => '🕐 Pending', 'processing' => '👨‍🍳 Processing', 'out_for_delivery' => '🚚 Out for Delivery', 'completed' => '✅ Delivered'];
+                    $statusOrder = array_keys($steps);
+                    $currentIdx = array_search($order['status'], $statusOrder);
+                    if ($currentIdx === false) $currentIdx = 0;
+                    ?>
+                    <div style="display:flex; gap:0; margin-top:25px; align-items:center; flex-wrap:wrap;">
+                    <?php foreach ($steps as $key => $label):
+                        $idx = array_search($key, $statusOrder);
+                        $done = $idx <= $currentIdx;
+                        $active = $idx === $currentIdx;
+                    ?>
+                        <div style="display:flex; align-items:center; gap:0;">
+                            <div style="text-align:center; min-width:110px;">
+                                <div style="width:36px;height:36px;border-radius:50%;margin:0 auto 6px;display:flex;align-items:center;justify-content:center;font-size:1.1em;
+                                    background:<?php echo $done ? 'linear-gradient(135deg,#667eea,#764ba2)' : '#e0e0e0'; ?>;
+                                    color:<?php echo $done ? 'white' : '#999'; ?>;
+                                    box-shadow:<?php echo $active ? '0 0 0 4px rgba(102,126,234,0.3)' : 'none'; ?>;">
+                                    <?php echo $done ? '✓' : ($idx + 1); ?>
+                                </div>
+                                <div style="font-size:0.78em;font-weight:<?php echo $active ? '700' : '500'; ?>;color:<?php echo $active ? '#667eea' : '#999'; ?>;">
+                                    <?php echo $label; ?>
+                                </div>
+                            </div>
+                            <?php if ($idx < count($steps) - 1): ?>
+                            <div style="flex:1;height:3px;min-width:30px;background:<?php echo $idx < $currentIdx ? 'linear-gradient(135deg,#667eea,#764ba2)' : '#e0e0e0'; ?>;margin-bottom:22px;"></div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                    </div>
+
+                    <div style="margin-top:20px;">
+                        <a href="?id=<?php echo $orderId; ?>&reorder=1" class="btn btn-secondary" onclick="return confirm('Add all items to cart?')">🔄 Reorder</a>
+                    </div>
                 </div>
 
                 <div class="info-grid">
