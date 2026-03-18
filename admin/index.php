@@ -38,12 +38,16 @@ try {
     $statusCounts = array_column($statusRows, 'count');
 
     // Revenue by month (last 6 months) for bar chart
+    // We group by the formatted month and then order by the raw month string for sorting
     $stmt = $conn->query("
-        SELECT DATE_FORMAT(MAX(created_at), '%b %Y') as month, SUM(total_amount) as revenue
-        FROM orders WHERE status = 'completed'
+        SELECT 
+            DATE_FORMAT(created_at, '%b %Y') as month, 
+            SUM(total_amount) as revenue
+        FROM orders 
+        WHERE status = 'completed'
         AND created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
-        GROUP BY DATE_FORMAT(created_at, '%Y-%m')
-        ORDER BY MIN(created_at)
+        GROUP BY DATE_FORMAT(created_at, '%b %Y'), DATE_FORMAT(created_at, '%Y-%m')
+        ORDER BY DATE_FORMAT(created_at, '%Y-%m') ASC
     ");
     $revenueRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $revenueLabels = array_column($revenueRows, 'month');
