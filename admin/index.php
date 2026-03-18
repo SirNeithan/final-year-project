@@ -39,7 +39,7 @@ try {
 
     // Revenue by month (last 6 months) for bar chart
     $stmt = $conn->query("
-        SELECT DATE_FORMAT(created_at, '%b %Y') as month, SUM(total_amount) as revenue
+        SELECT DATE_FORMAT(MAX(created_at), '%b %Y') as month, SUM(total_amount) as revenue
         FROM orders WHERE status = 'completed'
         AND created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
         GROUP BY DATE_FORMAT(created_at, '%Y-%m')
