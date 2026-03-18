@@ -518,7 +518,7 @@ if ($restaurant) {
         <section class="restaurants-section" id="restaurants">
             <div class="section-header">
                 <div class="section-subtitle">Our Partners</div>
-                <h2 class="section-title">Explore Our Vast Collection Of Restaurants</h2>
+                <h2 class="section-title">Explore Uganda</h2>
                 <p class="section-description">Your All In One Food Source</p>
             </div>
 
@@ -586,7 +586,7 @@ if ($restaurant) {
                                 data-product-name="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>"
                                 data-product-price="<?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>"
                                 data-restaurant="<?php echo htmlspecialchars($product['restaurant'], ENT_QUOTES, 'UTF-8'); ?>">
-                                Add to Cart
+                                <i class="ri-shopping-cart-line"></i> Add to Cart
                             </button>
                             <?php else: ?>
                             <button class="add-to-cart-btn" disabled style="opacity:0.5;cursor:not-allowed;">Out of Stock</button>

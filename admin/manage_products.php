@@ -115,6 +115,7 @@ try {
     <title>Manage Products - Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -483,7 +484,7 @@ try {
 </head>
 <body>
     <header>
-        <h1>🍽️ Manage Products</h1>
+        <h1><i class="ri-restaurant-line"></i> Manage Products</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Dashboard</a></li>
@@ -568,9 +569,9 @@ try {
                             <td>
                                 <?php $inStock = isset($product['in_stock']) ? $product['in_stock'] : 1; ?>
                                 <?php if ($inStock): ?>
-                                    <a href="?toggle_stock=<?php echo $product['id']; ?>" style="color:#11998e;font-weight:600;text-decoration:none;">✅ In Stock</a>
+                                    <a href="?toggle_stock=<?php echo $product['id']; ?>" style="color:#11998e;font-weight:600;text-decoration:none;"><i class="ri-checkbox-circle-line"></i> In Stock</a>
                                 <?php else: ?>
-                                    <a href="?toggle_stock=<?php echo $product['id']; ?>" style="color:#eb3349;font-weight:600;text-decoration:none;">❌ Out of Stock</a>
+                                    <a href="?toggle_stock=<?php echo $product['id']; ?>" style="color:#eb3349;font-weight:600;text-decoration:none;"><i class="ri-close-circle-line"></i> Out of Stock</a>
                                 <?php endif; ?>
                             </td>
                             <td>

@@ -206,7 +206,7 @@ try {
 
             <?php if ($message): ?>
                 <div class="message <?php echo $messageType; ?>">
-                    <?php echo $messageType === 'success' ? '✅' : '⚠️'; ?> <?php echo htmlspecialchars($message); ?>
+                    <?php echo $messageType === 'success' ? '<i class="ri-checkbox-circle-line"></i>' : '<i class="ri-alert-line"></i>'; ?> <?php echo htmlspecialchars($message); ?>
                 </div>
             <?php endif; ?>
 
@@ -243,7 +243,7 @@ try {
                         <label>Phone Number</label>
                         <input type="tel" name="phone" class="form-control" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="e.g. 0700123456">
                     </div>
-                    <button type="submit" name="update_profile" class="btn btn-primary">💾 Save Changes</button>
+                    <button type="submit" name="update_profile" class="btn btn-primary"><i class="ri-save-line"></i> Save Changes</button>
                 </form>
             </div>
 
@@ -262,7 +262,7 @@ try {
                         <label>Confirm New Password</label>
                         <input type="password" name="confirm_password" class="form-control" placeholder="Confirm new password" required>
                     </div>
-                    <button type="submit" name="change_password" class="btn btn-primary">🔒 Change Password</button>
+                    <button type="submit" name="change_password" class="btn btn-primary"><i class="ri-lock-line"></i> Change Password</button>
                 </form>
             </div>
         </div>

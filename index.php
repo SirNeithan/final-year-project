@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartDine Hub - Your Favorite Food Delivered</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -499,7 +500,7 @@
   <!-- Header -->
   <header class="header">
     <div class="logo">
-      🍽️ <span>SmartDine</span> Hub
+      <i class="ri-restaurant-line"></i> <span>SmartDine</span> Hub
     </div>
     <nav>
       <ul class="nav-links">
@@ -509,7 +510,7 @@
         <li><a href="#contact">Contact us</a></li>
         <li><a href="pages/auth/login.php" class="join-btn">Join</a></li>
         <li class="cart-icon">
-          🛒
+          <i class="ri-shopping-cart-line"></i>
           <span class="cart-badge">0</span>
         </li>
       </ul>
@@ -567,37 +568,37 @@
 
     <div class="features-grid">
       <div class="feature-card">
-        <span class="feature-icon">📱</span>
+        <span class="feature-icon"><i class="ri-smartphone-line"></i></span>
         <h3>Easy Orders</h3>
         <p>Browse menus and order with just a few taps. Simple, fast, and intuitive interface.</p>
       </div>
 
       <div class="feature-card">
-        <span class="feature-icon">⚡</span>
+        <span class="feature-icon"><i class="ri-flashlight-line"></i></span>
         <h3>Fast Delivery</h3>
         <p>Quick delivery and no long waits. Your food arrives hot and fresh every time.</p>
       </div>
 
       <div class="feature-card">
-        <span class="feature-icon">🍽️</span>
+        <span class="feature-icon"><i class="ri-restaurant-line"></i></span>
         <h3>Multi-Restaurant</h3>
         <p>Choose from multiple partner restaurants, each offering unique and delicious flavors.</p>
       </div>
 
       <div class="feature-card">
-        <span class="feature-icon">💳</span>
+        <span class="feature-icon"><i class="ri-money-dollar-circle-line"></i></span>
         <h3>Secure Payment</h3>
         <p>Safe and cashless dining experience with our secure payment system.</p>
       </div>
 
       <div class="feature-card">
-        <span class="feature-icon">⭐</span>
+        <span class="feature-icon"><i class="ri-star-fill"></i></span>
         <h3>Quality Food</h3>
         <p>Fresh ingredients and delicious meals prepared by expert chefs.</p>
       </div>
 
       <div class="feature-card">
-        <span class="feature-icon">📦</span>
+        <span class="feature-icon"><i class="ri-box-line"></i></span>
         <h3>Track Orders</h3>
         <p>Real-time order tracking and complete order history at your fingertips.</p>
       </div>
@@ -606,7 +607,7 @@
 
   <!-- Footer -->
   <footer id="contact">
-    <p>📞 Contact us: 0766191751 | SmartDine Hub - Your Favorite Food Delivered 🍽️</p>
+    <p><i class="ri-phone-line"></i> Contact us: 0766191751 | SmartDine Hub - Your Favorite Food Delivered <i class="ri-restaurant-line"></i></p>
     <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.6;">© 2026 SmartDine Hub. All rights reserved.</p>
   </footer>
 

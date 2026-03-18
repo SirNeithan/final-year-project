@@ -99,11 +99,11 @@ textarea.form-control { resize:vertical; min-height:100px; }
         <?php if ($restaurantInfo): ?>
         <p style="font-size:1.1em; opacity:0.9; max-width:600px;"><?php echo htmlspecialchars($restaurantInfo['description']); ?></p>
         <div class="meta">
-            <span>🍽️ <?php echo htmlspecialchars($restaurantInfo['cuisine_type']); ?></span>
-            <span>📍 <?php echo htmlspecialchars($restaurantInfo['address']); ?></span>
-            <span>🕐 <?php echo htmlspecialchars($restaurantInfo['opening_hours']); ?></span>
+            <span><i class="ri-restaurant-line"></i> <?php echo htmlspecialchars($restaurantInfo['cuisine_type']); ?></span>
+            <span><i class="ri-map-pin-line"></i> <?php echo htmlspecialchars($restaurantInfo['address']); ?></span>
+            <span><i class="ri-time-line"></i> <?php echo htmlspecialchars($restaurantInfo['opening_hours']); ?></span>
             <?php if ($avgRating > 0): ?>
-            <span>⭐ <?php echo $avgRating; ?>/5 (<?php echo count($reviews); ?> reviews)</span>
+            <span><i class="ri-star-fill"></i> <?php echo $avgRating; ?>/5 (<?php echo count($reviews); ?> reviews)</span>
             <?php endif; ?>
         </div>
         <?php endif; ?>
@@ -112,10 +112,10 @@ textarea.form-control { resize:vertical; min-height:100px; }
     <!-- Info cards -->
     <?php if ($restaurantInfo): ?>
     <div class="info-grid">
-        <div class="info-card"><div class="icon">📞</div><h4>Phone</h4><p><?php echo htmlspecialchars($restaurantInfo['phone']); ?></p></div>
-        <div class="info-card"><div class="icon">🕐</div><h4>Hours</h4><p><?php echo htmlspecialchars($restaurantInfo['opening_hours']); ?></p></div>
-        <div class="info-card"><div class="icon">📍</div><h4>Location</h4><p><?php echo htmlspecialchars($restaurantInfo['region']); ?> Region</p></div>
-        <div class="info-card"><div class="icon">⭐</div><h4>Rating</h4>
+        <div class="info-card"><div class="icon"><i class="ri-phone-line"></i></div><h4>Phone</h4><p><?php echo htmlspecialchars($restaurantInfo['phone']); ?></p></div>
+        <div class="info-card"><div class="icon"><i class="ri-time-line"></i></div><h4>Hours</h4><p><?php echo htmlspecialchars($restaurantInfo['opening_hours']); ?></p></div>
+        <div class="info-card"><div class="icon"><i class="ri-map-pin-line"></i></div><h4>Location</h4><p><?php echo htmlspecialchars($restaurantInfo['region']); ?> Region</p></div>
+        <div class="info-card"><div class="icon"><i class="ri-star-fill"></i></div><h4>Rating</h4>
             <p><?php echo $avgRating > 0 ? $avgRating . '/5' : 'No ratings yet'; ?></p>
         </div>
     </div>
@@ -168,7 +168,7 @@ textarea.form-control { resize:vertical; min-height:100px; }
     <!-- Review form -->
     <h2 class="section-title">Leave a Review</h2>
     <?php if (isset($_GET['reviewed'])): ?>
-        <div class="success-msg">✅ Thanks for your review!</div>
+        <div class="success-msg"><i class="ri-checkbox-circle-line"></i> Thanks for your review!</div>
     <?php endif; ?>
     <?php if ($reviewMsg): ?>
         <div style="background:#ffebee;color:#c62828;padding:12px 18px;border-radius:10px;border-left:4px solid #f44336;margin-bottom:20px;"><?php echo $reviewMsg; ?></div>
@@ -180,7 +180,7 @@ textarea.form-control { resize:vertical; min-height:100px; }
                 <div class="star-select">
                     <?php for ($i = 5; $i >= 1; $i--): ?>
                     <input type="radio" name="rating" id="star<?php echo $i; ?>" value="<?php echo $i; ?>" required>
-                    <label for="star<?php echo $i; ?>">★</label>
+                    <label for="star<?php echo $i; ?>"><i class="ri-star-fill"></i></label>
                     <?php endfor; ?>
                 </div>
             </div>
@@ -198,10 +198,10 @@ textarea.form-control { resize:vertical; min-height:100px; }
     <?php foreach ($reviews as $review): ?>
     <div class="review-card">
         <div class="review-header">
-            <span class="reviewer">👤 <?php echo htmlspecialchars($review['username']); ?></span>
+            <span class="reviewer"><i class="ri-user-line"></i> <?php echo htmlspecialchars($review['username']); ?></span>
             <span class="review-date"><?php echo date('M j, Y', strtotime($review['created_at'])); ?></span>
         </div>
-        <div class="stars"><?php echo str_repeat('★', $review['rating']) . str_repeat('☆', 5 - $review['rating']); ?></div>
+        <div class="stars"><?php echo str_repeat('<i class="ri-star-fill"></i>', $review['rating']) . str_repeat('<i class="ri-star-line"></i>', 5 - $review['rating']); ?></div>
         <?php if ($review['comment']): ?>
         <p class="review-comment" style="margin-top:8px;"><?php echo htmlspecialchars($review['comment']); ?></p>
         <?php endif; ?>

@@ -40,7 +40,7 @@ include '../../includes/header.php';
 
     <?php if (empty($results)): ?>
         <div class="empty-state">
-            <div class="empty-state-icon">🍰</div>
+            <div class="empty-state-icon"><i class="ri-cake-line" style="font-size:3rem;color:#ccc;"></i></div>
             <h2 class="empty-state-title">No Desserts Found</h2>
             <p class="empty-state-description">
                 We couldn't find any desserts<?php echo $restaurant ? ' from ' . htmlspecialchars($restaurant) : ''; ?>. 
@@ -67,8 +67,13 @@ include '../../includes/header.php';
                             <span style="color: #999;">from</span> <?php echo htmlspecialchars($product['restaurant']); ?>
                         </p>
                         <div class="product-price"><?php echo htmlspecialchars($product['price']); ?></div>
-                        <button class="btn btn-primary btn-full" 
-                                onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo addslashes($product['name']); ?>', '<?php echo htmlspecialchars($product['price']); ?>', '<?php echo addslashes($product['restaurant']); ?>')">
+                        <button class="btn btn-primary btn-full"
+                                type="button"
+                                data-add-to-cart
+                                data-product-id="<?php echo (int)$product['id']; ?>"
+                                data-product-name="<?php echo htmlspecialchars($product['name'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-product-price="<?php echo htmlspecialchars($product['price'], ENT_QUOTES, 'UTF-8'); ?>"
+                                data-restaurant="<?php echo htmlspecialchars($product['restaurant'], ENT_QUOTES, 'UTF-8'); ?>">
                             Add to Cart
                         </button>
                     </div>

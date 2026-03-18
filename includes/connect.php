@@ -17,6 +17,9 @@ try {
     
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+     // ADD THIS LINE BELOW: It disables the strict 'ONLY_FULL_GROUP_BY' mode
+    $conn->exec("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }

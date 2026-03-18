@@ -198,7 +198,7 @@ include '../../includes/header.php';
 
     <?php if (empty($cartItems)): ?>
         <div class="empty-state">
-            <div class="empty-state-icon">🛒</div>
+            <div class="empty-state-icon"><i class="ri-shopping-cart-line" style="font-size:3rem;color:#ccc;"></i></div>
             <h2 class="empty-state-title">Your Cart is Empty</h2>
             <p class="empty-state-description">
                 Looks like you haven't added any items to your cart yet. Start exploring our delicious menu!

@@ -71,6 +71,7 @@ try {
     <title>Manage Users - Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -443,7 +444,7 @@ try {
 </head>
 <body>
     <header>
-        <h1>👥 Manage Users</h1>
+        <h1><i class="ri-group-line"></i> Manage Users</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Dashboard</a></li>

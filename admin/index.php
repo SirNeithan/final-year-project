@@ -64,6 +64,7 @@ if (empty($revenueLabels)) { $revenueLabels = ['No Data']; $revenueData = [0]; }
     <title>Admin Dashboard - SmartDine Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
@@ -410,7 +411,7 @@ if (empty($revenueLabels)) { $revenueLabels = ['No Data']; $revenueData = [0]; }
 </head>
 <body>
     <header>
-        <h1>🎯 Admin Dashboard</h1>
+        <h1><i class="ri-focus-3-line"></i> Admin Dashboard</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Dashboard</a></li>

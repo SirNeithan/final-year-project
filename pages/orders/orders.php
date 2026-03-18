@@ -160,7 +160,7 @@ try {
             
             <?php if (empty($orders)): ?>
                 <div class="empty-state">
-                    <div class="empty-state-icon">📦</div>
+                    <div class="empty-state-icon"><i class="ri-box-line" style="font-size:3rem;color:#ccc;"></i></div>
                     <h2 class="empty-state-title">No Orders Yet</h2>
                     <p class="empty-state-description">You haven't placed any orders yet. Start exploring our menu!</p>
                     <a href="../../home.php" class="btn btn-primary">Start Shopping</a>
@@ -195,7 +195,7 @@ try {
                         </div>
                         
                         <a href="order_details.php?id=<?php echo $order['id']; ?>" class="btn btn-primary">View Details</a>
-                        <a href="order_details.php?id=<?php echo $order['id']; ?>&reorder=1" class="btn btn-secondary" style="margin-left:10px;" onclick="return confirm('Add all items from this order to your cart?')">🔄 Reorder</a>
+                        <a href="order_details.php?id=<?php echo $order['id']; ?>&reorder=1" class="btn btn-secondary" style="margin-left:10px;" onclick="return confirm('Add all items from this order to your cart?')"><i class="ri-refresh-line"></i> Reorder</a>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>

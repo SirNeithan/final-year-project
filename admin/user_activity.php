@@ -62,6 +62,7 @@ try {
     <title>User Activity - Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background: #fff; min-height: 100vh; padding: 20px; }
@@ -156,7 +157,7 @@ try {
 </head>
 <body>
     <header>
-        <h1>📊 User Activity</h1>
+        <h1><i class="ri-bar-chart-line"></i> User Activity</h1>
         <nav>
             <ul>
                 <li><a href="index.php">Dashboard</a></li>
@@ -175,7 +176,7 @@ try {
 
             <?php if (isset($dbError)): ?>
             <div class="alert-box">
-                ⚠️ Activity tables not found. Run <strong>data/missing_features.sql</strong> to create them.<br>
+                <i class="ri-alert-line"></i> Activity tables not found. Run <strong>data/missing_features.sql</strong> to create them.<br>
                 <small><?php echo htmlspecialchars($dbError); ?></small>
             </div>
             <?php endif; ?>
@@ -183,12 +184,12 @@ try {
             <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-label">🟢 Online Now</div>
+                    <div class="stat-label"><i class="ri-checkbox-circle-line"></i> Online Now</div>
                     <div class="stat-value"><?php echo count($onlineUsers); ?></div>
                     <div style="color:#999;font-size:0.8em;">last 15 min</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">🔑 Logins Today</div>
+                    <div class="stat-label"><i class="ri-key-line"></i> Logins Today</div>
                     <div class="stat-value">
                         <?php
                         $today = array_filter($recentLogins, fn($l) => date('Y-m-d', strtotime($l['logged_in_at'])) === date('Y-m-d'));
@@ -197,11 +198,11 @@ try {
                     </div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">📋 Total Logins Logged</div>
+                    <div class="stat-label"><i class="ri-time-line"></i> Total Logins Logged</div>
                     <div class="stat-value"><?php echo count($recentLogins); ?>+</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">👤 Active Users (ever)</div>
+                    <div class="stat-label"><i class="ri-user-line"></i> Active Users (ever)</div>
                     <div class="stat-value">
                         <?php echo count(array_filter($allUserActivity, fn($u) => $u['last_seen'] !== null)); ?>
                     </div>
@@ -245,7 +246,7 @@ try {
 
             <!-- All Users Activity Summary -->
             <div class="section-card">
-                <h2>👥 All Users — Activity Summary</h2>
+                <h2><i class="ri-group-line"></i> All Users — Activity Summary</h2>
                 <table>
                     <thead>
                         <tr>
@@ -293,7 +294,7 @@ try {
 
             <!-- Recent Logins -->
             <div class="section-card">
-                <h2>🔑 Recent Logins</h2>
+                <h2><i class="ri-key-line"></i> Recent Logins</h2>
                 <?php if (empty($recentLogins)): ?>
                     <p style="color:#999;text-align:center;padding:20px 0;">No login records yet.</p>
                 <?php else: ?>

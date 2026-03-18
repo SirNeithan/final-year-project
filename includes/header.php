@@ -56,6 +56,8 @@ if (isset($_SESSION['user_id']) && isset($conn)) {
     <title><?php echo $pageTitle ?? 'Smart Dine'; ?></title>
     <!-- Google Fonts - Poppins for modern, clean typography -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <style>
         /* Global Reset - Remove default browser styling */
         * {
@@ -382,7 +384,7 @@ if (isset($_SESSION['user_id']) && isset($conn)) {
         <div class="header-content">
             <!-- Site Logo -->
             <a href="<?php echo $basePath; ?>home.php" class="logo">
-                <div class="logo-icon">🍽️</div>
+                <div class="logo-icon"><i class="ri-restaurant-line"></i></div>
                 <div class="logo-text">
                     <span class="brand-name">SmartDine Hub</span>
                     <span class="brand-tagline">Delicious Delivered</span>
@@ -393,13 +395,13 @@ if (isset($_SESSION['user_id']) && isset($conn)) {
             <?php if (isset($_SESSION['user_id'])): ?>
             <div class="user-info">
                 <span class="user-badge">
-                    👤 <?php echo htmlspecialchars($_SESSION['username']); ?>
+                    <i class="ri-user-line"></i> <?php echo htmlspecialchars($_SESSION['username']); ?>
                     <!-- Show admin badge if user is an admin -->
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                        <span class="admin-badge">ADMIN</span>
+                        <span class="admin-badge"><i class="ri-shield-star-line"></i> ADMIN</span>
                     <?php endif; ?>
                 </span>
-                <a href="<?php echo $basePath; ?>pages/auth/logout.php" class="logout-btn">🚪 Logout</a>
+                <a href="<?php echo $basePath; ?>pages/auth/logout.php" class="logout-btn"><i class="ri-logout-box-r-line"></i> Logout</a>
             </div>
             <?php endif; ?>
         </div>
@@ -408,28 +410,28 @@ if (isset($_SESSION['user_id']) && isset($conn)) {
         <nav>
             <ul>
                 <!-- Main navigation links -->
-                <li><a href="<?php echo $basePath; ?>home.php">🏠 Home</a></li>
+                <li><a href="<?php echo $basePath; ?>home.php"><i class="ri-home-line"></i> Home</a></li>
                 
                 <!-- Category links (only shown if restaurant is set) -->
                 <?php if (isset($restaurant) && $restaurant): ?>
-                    <li><a href="<?php echo $basePath; ?>pages/categories/appetizers.php?restaurant=<?php echo urlencode($restaurant); ?>">🥗 Appetizers</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/categories/main-courses.php?restaurant=<?php echo urlencode($restaurant); ?>">🍽️ Main Courses</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/categories/desserts.php?restaurant=<?php echo urlencode($restaurant); ?>">🍰 Desserts</a></li>
-                    <li><a href="<?php echo $basePath; ?>pages/categories/beverages.php?restaurant=<?php echo urlencode($restaurant); ?>">🥤 Beverages</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/appetizers.php?restaurant=<?php echo urlencode($restaurant); ?>"><i class="ri-leaf-line"></i> Appetizers</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/main-courses.php?restaurant=<?php echo urlencode($restaurant); ?>"><i class="ri-restaurant-line"></i> Main Courses</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/desserts.php?restaurant=<?php echo urlencode($restaurant); ?>"><i class="ri-cake-line"></i> Desserts</a></li>
+                    <li><a href="<?php echo $basePath; ?>pages/categories/beverages.php?restaurant=<?php echo urlencode($restaurant); ?>"><i class="ri-cup-line"></i> Beverages</a></li>
                 <?php endif; ?>
                 
                 <!-- User-specific links -->
-                <li><a href="<?php echo $basePath; ?>pages/user/search.php">🔍 Search</a></li>
-                <li><a href="<?php echo $basePath; ?>pages/about.php">ℹ️ About</a></li>
-                <li><a href="<?php echo $basePath; ?>pages/user/profile.php">👤 Profile</a></li>
-                <li><a href="<?php echo $basePath; ?>pages/orders/orders.php">📦 Orders</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/user/search.php"><i class="ri-search-line"></i> Search</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/about.php"><i class="ri-information-line"></i> About</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/user/profile.php"><i class="ri-user-line"></i> Profile</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/orders/orders.php"><i class="ri-box-line"></i> Orders</a></li>
                 
                 <!-- Cart link with dynamic item count -->
-                <li><a href="<?php echo $basePath; ?>pages/user/cart.php">🛒 Cart (<span id="cart-count">0</span>)</a></li>
+                <li><a href="<?php echo $basePath; ?>pages/user/cart.php"><i class="ri-shopping-cart-line"></i> Cart (<span id="cart-count">0</span>)</a></li>
                 
                 <!-- Admin link (only shown for admin users) -->
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <li><a href="<?php echo $basePath; ?>admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;">⚙️ Admin</a></li>
+                    <li><a href="<?php echo $basePath; ?>admin/index.php" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #333;"><i class="ri-settings-3-line"></i> Admin</a></li>
                 <?php endif; ?>
             </ul>
         </nav>

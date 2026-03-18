@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
 
 <div class="about-wrap">
     <div class="hero-banner">
-        <h1>🍽️ About SmartDine Hub</h1>
+        <h1><i class="ri-restaurant-line"></i> About SmartDine Hub</h1>
         <p>We connect food lovers across Uganda with the best restaurants in their region — making every meal an experience worth remembering.</p>
     </div>
 
@@ -70,22 +70,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         <h2>Our Values</h2>
         <div class="values-grid">
             <div class="value-card">
-                <div class="icon">🤝</div>
+                <div class="icon"><i class="ri-shake-hands-line"></i></div>
                 <h3>Partnership</h3>
                 <p>We work closely with every restaurant to ensure quality and consistency on every order.</p>
             </div>
             <div class="value-card">
-                <div class="icon">⚡</div>
+                <div class="icon"><i class="ri-flashlight-line"></i></div>
                 <h3>Speed</h3>
                 <p>Fast ordering, fast delivery. We respect your time and your hunger.</p>
             </div>
             <div class="value-card">
-                <div class="icon">🌍</div>
+                <div class="icon"><i class="ri-map-line"></i></div>
                 <h3>Community</h3>
                 <p>Supporting local restaurants and creating jobs across Uganda's regions.</p>
             </div>
             <div class="value-card">
-                <div class="icon">🔒</div>
+                <div class="icon"><i class="ri-lock-line"></i></div>
                 <h3>Trust</h3>
                 <p>Secure payments, honest pricing and transparent order tracking every time.</p>
             </div>
@@ -96,16 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         <h2>Contact Us</h2>
         <div class="contact-grid">
             <div class="contact-info">
-                <p>📞 <strong>Phone:</strong> 0766191751</p>
-                <p>📧 <strong>Email:</strong> hello@smartdinehub.ug</p>
-                <p>📍 <strong>Address:</strong> Kampala, Uganda</p>
-                <p>🕐 <strong>Hours:</strong> Mon–Sun, 8am – 10pm</p>
+                <p><i class="ri-phone-line"></i> <strong>Phone:</strong> 0766191751</p>
+                <p><i class="ri-mail-line"></i> <strong>Email:</strong> hello@smartdinehub.ug</p>
+                <p><i class="ri-map-pin-line"></i> <strong>Address:</strong> Kampala, Uganda</p>
+                <p><i class="ri-time-line"></i> <strong>Hours:</strong> Mon–Sun, 8am – 10pm</p>
                 <br>
                 <p style="color:#667eea; font-weight:600;">We typically respond within 2 hours.</p>
             </div>
             <div class="contact-form">
                 <?php if ($sent): ?>
-                    <div class="success-msg">✅ Message sent! We'll get back to you shortly.</div>
+                    <div class="success-msg"><i class="ri-checkbox-circle-line"></i> Message sent! We'll get back to you shortly.</div>
                 <?php endif; ?>
                 <form method="POST">
                     <div class="form-group">

@@ -238,7 +238,7 @@ if (isset($_GET['reorder']) && $_GET['reorder'] == 1) {
 
                     <!-- Order status timeline -->
                     <?php
-                    $steps = ['pending' => '🕐 Pending', 'processing' => '👨‍🍳 Processing', 'out_for_delivery' => '🚚 Out for Delivery', 'completed' => '✅ Delivered'];
+                    $steps = ['pending' => 'Pending', 'processing' => 'Processing', 'out_for_delivery' => 'Out for Delivery', 'completed' => 'Delivered'];
                     $statusOrder = array_keys($steps);
                     $currentIdx = array_search($order['status'], $statusOrder);
                     if ($currentIdx === false) $currentIdx = 0;
@@ -269,7 +269,7 @@ if (isset($_GET['reorder']) && $_GET['reorder'] == 1) {
                     </div>
 
                     <div style="margin-top:20px;">
-                        <a href="?id=<?php echo $orderId; ?>&reorder=1" class="btn btn-secondary" onclick="return confirm('Add all items to cart?')">🔄 Reorder</a>
+                        <a href="?id=<?php echo $orderId; ?>&reorder=1" class="btn btn-secondary" onclick="return confirm('Add all items to cart?')"><i class="ri-refresh-line"></i> Reorder</a>
                     </div>
                 </div>
 

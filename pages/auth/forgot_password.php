@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Forgot Password - SmartDine Hub</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
     body { min-height:100vh; background:#f8f8ff; display:flex; align-items:center; justify-content:center; padding:20px; }
@@ -73,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
   <div class="card">
-    <div class="logo">🔑</div>
+    <div class="logo"><i class="ri-key-line" style="font-size:2rem;color:#667eea;"></i></div>
     <h1>Forgot Password</h1>
     <p class="subtitle">Enter your email and we'll send you a reset link</p>
 

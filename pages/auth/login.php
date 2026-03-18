@@ -44,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Smart Dine</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -398,7 +399,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     <div class="auth-left">
       <div class="auth-form">
         <div class="logo">
-          <span class="logo-icon">🍽️</span>
+          <span class="logo-icon"><i class="ri-restaurant-line"></i></span>
           <span class="logo-text">Smart Dine</span>
         </div>
 
@@ -419,7 +420,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
           </div>
 
           <?php if (isset($error) && !empty($error)): ?>
-            <div class="error-message">⚠️ <?php echo htmlspecialchars($error); ?></div>
+            <div class="error-message"><i class="ri-alert-line"></i> <?php echo htmlspecialchars($error); ?></div>
           <?php endif; ?>
 
           <button class="login-btn" type="submit">Login</button>
@@ -456,15 +457,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
         
         <div class="features-list">
           <div class="feature-item">
-            <span class="feature-icon">🍔</span>
+            <span class="feature-icon"><i class="ri-restaurant-line"></i></span>
             <span>Multi-restaurant selection</span>
           </div>
           <div class="feature-item">
-            <span class="feature-icon">⚡</span>
+            <span class="feature-icon"><i class="ri-flashlight-line"></i></span>
             <span>Fast & reliable delivery</span>
           </div>
           <div class="feature-item">
-            <span class="feature-icon">💳</span>
+            <span class="feature-icon"><i class="ri-money-dollar-circle-line"></i></span>
             <span>Secure payment system</span>
           </div>
         </div>

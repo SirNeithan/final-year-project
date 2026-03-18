@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Account - Smart Dine</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -376,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="auth-left">
       <div class="auth-form">
         <div class="logo">
-          <span class="logo-icon">🍽️</span>
+          <span class="logo-icon"><i class="ri-restaurant-line"></i></span>
           <span class="logo-text">Smart Dine</span>
         </div>
 
@@ -400,7 +401,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
 
           <?php if (!empty($regError)): ?>
-            <div class="error-message">⚠️ <?php echo htmlspecialchars($regError); ?></div>
+            <div class="error-message"><i class="ri-alert-line"></i> <?php echo htmlspecialchars($regError); ?></div>
           <?php endif; ?>
 
           <button class="register-btn" type="submit">Create Account</button>
@@ -427,15 +428,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <div class="features-list">
           <div class="feature-item">
-            <span class="feature-icon">✨</span>
+            <span class="feature-icon"><i class="ri-user-add-line"></i></span>
             <span>Easy account setup</span>
           </div>
           <div class="feature-item">
-            <span class="feature-icon">🎁</span>
+            <span class="feature-icon"><i class="ri-gift-line"></i></span>
             <span>Exclusive deals & offers</span>
           </div>
           <div class="feature-item">
-            <span class="feature-icon">📱</span>
+            <span class="feature-icon"><i class="ri-smartphone-line"></i></span>
             <span>Order tracking & history</span>
           </div>
         </div>

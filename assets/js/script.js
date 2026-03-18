@@ -279,52 +279,16 @@ function applyThreeColumnGrid() {
 }
 
 /**
- * Show a notification message
+ * Show a brief toast notification message
  * 
  * @param {string} message - The message to display
  */
 function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 50px;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        z-index: 10000;
-        text-align: center;
-        max-width: 500px;
-    `;
-    notification.innerHTML = `
-        <div style="font-size: 3em; margin-bottom: 20px;">✅</div>
-        <h2 style="color: #333; margin-bottom: 10px; font-family: 'Playfair Display', serif; font-size: 2em;">Order Placed Successfully!</h2>
-        <p style="color: #666; font-size: 1.1em; margin-bottom: 20px;">Your order #${response.order_id} has been confirmed.</p>
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-            <p style="color: #999; margin-bottom: 10px;">For more details, contact:</p>
-            <p style="font-size: 1.3em; color: #667eea; font-weight: 600; margin: 0;">📞 0766191751</p>
-        </div>
-        <p style="color: #666; font-size: 0.95em;">You will receive an email confirmation shortly.</p>
-        <button onclick="window.location.href='orders.php'" style="
-            margin-top: 20px;
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1em;
-            cursor: pointer;
-        ">View Your Orders</button>
-    `;
-    document.body.appendChild(notification);
-    
-    // Redirect after 3 seconds
-    setTimeout(() => {
-        window.location.href = 'orders.php';
-    }, 3000);
+    const el = document.getElementById('notification');
+    if (!el) return;
+    el.textContent = message;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3000);
 }
 
 

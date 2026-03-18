@@ -239,7 +239,7 @@ include '../../includes/header.php';
 
     <?php if (empty($results) && ($query || $category || $restaurant)): ?>
         <div class="empty-state">
-            <div class="empty-state-icon">🔍</div>
+            <div class="empty-state-icon"><i class="ri-search-line" style="font-size:3rem;color:#ccc;"></i></div>
             <h2 class="empty-state-title">No Results Found</h2>
             <p class="empty-state-description">
                 We couldn't find any dishes matching your search. Try different keywords or filters.
@@ -248,7 +248,7 @@ include '../../includes/header.php';
         </div>
     <?php elseif (empty($results)): ?>
         <div class="empty-state">
-            <div class="empty-state-icon">🍽️</div>
+            <div class="empty-state-icon"><i class="ri-restaurant-line" style="font-size:3rem;color:#ccc;"></i></div>
             <h2 class="empty-state-title">Start Searching</h2>
             <p class="empty-state-description">
                 Use the search bar above to find your favorite dishes from our menu

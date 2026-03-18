@@ -166,7 +166,7 @@ $orderId      = $_GET['order_id'] ?? null;
 
             <?php if ($orderSuccess): ?>
                 <div class="success-page">
-                    <div class="success-icon">✅</div>
+                    <div class="success-icon"><i class="ri-checkbox-circle-line" style="font-size:5rem;color:#4caf50;"></i></div>
                     <h2 class="success-title">Order Placed!</h2>
                     <p style="color:#666;font-size:1.1em;margin-bottom:10px;">Thank you — your order is confirmed.</p>
 
@@ -181,27 +181,27 @@ $orderId      = $_GET['order_id'] ?? null;
                         </div>
                         <div class="success-row">
                             <strong>Payment</strong>
-                            <span>💵 Pay on Delivery</span>
+                            <span><i class="ri-money-dollar-circle-line"></i> Pay on Delivery</span>
                         </div>
                     </div>
 
                     <div style="background:#e8f5e9;padding:18px 22px;border-radius:14px;border-left:4px solid #4caf50;text-align:left;margin-bottom:10px;">
                         <p style="color:#2e7d32;line-height:1.9;margin:0;">
-                            📱 We'll call you shortly to confirm delivery details.<br>
-                            🚚 Expected delivery: 30–45 minutes.<br>
-                            💵 Please have cash ready on delivery.
+                            <i class="ri-smartphone-line"></i> We'll call you shortly to confirm delivery details.<br>
+                            <i class="ri-truck-line"></i> Expected delivery: 30–45 minutes.<br>
+                            <i class="ri-money-dollar-circle-line"></i> Please have cash ready on delivery.
                         </p>
                     </div>
 
                     <div class="success-actions">
-                        <a href="../orders/orders.php" class="btn btn-primary">📦 View My Orders</a>
-                        <a href="../../home.php" class="btn btn-secondary">🏠 Continue Shopping</a>
+                        <a href="../orders/orders.php" class="btn btn-primary"><i class="ri-box-line"></i> View My Orders</a>
+                        <a href="../../home.php" class="btn btn-secondary"><i class="ri-home-line"></i> Continue Shopping</a>
                     </div>
                 </div>
 
             <?php elseif (empty($cartItems)): ?>
                 <div class="empty-state">
-                    <div class="empty-state-icon">🛒</div>
+                    <div class="empty-state-icon"><i class="ri-shopping-cart-line" style="font-size:3rem;color:#ccc;"></i></div>
                     <h2 class="empty-state-title">Your cart is empty</h2>
                     <p class="empty-state-description">Add some items before checking out.</p>
                     <a href="search.php" class="btn btn-primary">Browse Menu</a>
@@ -249,7 +249,7 @@ $orderId      = $_GET['order_id'] ?? null;
 
                             <!-- Pay on Delivery badge -->
                             <div class="pod-badge">
-                                <div class="pod-icon">💵</div>
+                                <div class="pod-icon"><i class="ri-money-dollar-circle-line" style="font-size:2.5rem;color:#667eea;"></i></div>
                                 <div class="pod-text">
                                     <strong>Pay on Delivery</strong>
                                     <span>Have your cash ready when the rider arrives</span>
@@ -306,7 +306,7 @@ $orderId      = $_GET['order_id'] ?? null;
                             </div>
 
                             <button type="submit" form="checkout-form" class="place-order-btn" id="place-btn">
-                                <span id="btn-text">🛵 Place Order</span>
+                                <span id="btn-text"><i class="ri-motorbike-line"></i> Place Order</span>
                                 <span id="btn-loader" style="display:none;">Placing order...</span>
                             </button>
                         </div>
