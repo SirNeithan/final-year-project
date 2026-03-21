@@ -97,11 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         <div class="contact-grid">
             <div class="contact-info">
                 <p><i class="ri-phone-line"></i> <strong>Phone:</strong> 0766191751</p>
-                <p><i class="ri-mail-line"></i> <strong>Email:</strong> hello@smartdinehub.ug</p>
+                <p><i class="ri-mail-line"></i> <strong>Email:</strong> neithanmwaka@gmail.com</p>
                 <p><i class="ri-map-pin-line"></i> <strong>Address:</strong> Kampala, Uganda</p>
                 <p><i class="ri-time-line"></i> <strong>Hours:</strong> Mon–Sun, 8am – 10pm</p>
                 <br>
-                <p style="color:#667eea; font-weight:600;">We typically respond within 2 hours.</p>
+                <p style="color:#667eea; font-weight:600;">We typically in a giff.</p>
             </div>
             <div class="contact-form">
                 <?php if ($sent): ?>
