@@ -3,7 +3,30 @@ session_start();
 $pageTitle = "About Us - SmartDine Hub";
 $headerTitle = "SmartDine Hub";
 include '../includes/header.php';
-?>
+
+$sent = false;
+$sendError = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
+    $senderName    = trim(strip_tags($_POST['name'] ?? ''));
+    $senderEmail   = trim(strip_tags($_POST['email'] ?? ''));
+    $senderMessage = trim(strip_tags($_POST['message'] ?? ''));
+
+    if ($senderName && $senderEmail && $senderMessage && filter_var($senderEmail, FILTER_VALIDATE_EMAIL)) {
+        $to      = 'neithanmwaka@gmail.com';
+        $subject = 'SmartDine Hub Contact: ' . $senderName;
+        $body    = "You have a new message from the SmartDine Hub contact form.\n\n"
+                 . "Name:    $senderName\n"
+                 . "Email:   $senderEmail\n\n"
+                 . "Message:\n$senderMessage\n\n"
+                 . "---\nSent from SmartDine Hub About page";
+
+        $headers  = "From: SmartDine Hub <noreply@smartdinehub.ug>\r\n";
+        $headers .= "Reply-To: $senderName <$senderEmail>\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+
+        ?>
 <link rel="stylesheet" href="../assets/css/elegant-theme.css">
 <style>
 .about-wrap { max-width:1100px; margin:0 auto; padding:40px 20px; }
@@ -41,14 +64,6 @@ include '../includes/header.php';
 .success-msg { background:#e8f5e9; color:#2e7d32; padding:14px 18px; border-radius:12px; border-left:4px solid #4caf50; margin-bottom:20px; }
 @media(max-width:768px){ .contact-grid{ grid-template-columns:1fr; } .hero-banner{ padding:40px 20px; } }
 </style>
-
-<?php
-$sent = false;
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
-    // In a real system you'd send an email here
-    $sent = true;
-}
-?>
 
 <div class="about-wrap">
     <div class="hero-banner">
@@ -106,6 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             <div class="contact-form">
                 <?php if ($sent): ?>
                     <div class="success-msg"><i class="ri-checkbox-circle-line"></i> Message sent! We'll get back to you shortly.</div>
+                <?php elseif ($sendError): ?>
+                    <div style="background:#ffebee;color:#c62828;padding:14px 18px;border-radius:12px;border-left:4px solid #f44336;margin-bottom:20px;">
+                        <i class="ri-alert-line"></i> Could not send your message right now. Please email us directly at <strong>neithanmwaka@gmail.com</strong>.
+                    </div>
                 <?php endif; ?>
                 <form method="POST">
                     <div class="form-group">
